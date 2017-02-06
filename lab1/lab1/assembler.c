@@ -108,7 +108,7 @@ int toNum(char *pStr)
             if (!isdigit(*t_ptr))
             {
                 printf("Error: invalid decimal operand, %s\n", orig_pStr);
-                printf("Error\n"); exit(4);
+                exit(4);
             }
             t_ptr++;
         }
@@ -131,7 +131,7 @@ int toNum(char *pStr)
             if (!isxdigit(*t_ptr))
             {
                 printf("Error: invalid hex operand, %s\n", orig_pStr);
-                printf("Error\n"); exit(4);
+                exit(4);
             }
             t_ptr++;
         }
@@ -143,7 +143,7 @@ int toNum(char *pStr)
     else
     {
         printf("Error: invalid operand, %s\n", orig_pStr);
-        printf("Error\n"); exit(4);  /* This has been changed from error code 3 to error code 4, see clarification 12 */
+        exit(4);  /* This has been changed from error code 3 to error code 4, see clarification 12 */
     }
 }
 
@@ -292,7 +292,7 @@ void ADD(char *op1, char *op2, char *op3, char *op4)
     if (*op4 != '\0')
     {
         /* Error: too many args */
-        printf("Error\n"); exit(4);
+        exit(4);
     }
     
     dr = getRegister(op1);
@@ -302,12 +302,12 @@ void ADD(char *op1, char *op2, char *op3, char *op4)
     if (dr == -1)
     {
         /* Error: invalid DR */
-        printf("Error\n"); exit(4);
+        exit(4);
     }
     if (sr1 == -1)
     {
         /* Error: invalid SR1 */
-        printf("Error\n"); exit(4);
+        exit(4);
     }
     if (sr2 == -1) /* Handle case for immediate values */
     {
@@ -315,7 +315,7 @@ void ADD(char *op1, char *op2, char *op3, char *op4)
         if (sr2 < -16 || sr2 > 15)
         {
             /* Error: Invalid immediate value */
-            printf("Error: Invalid Constant\n"); exit(3);
+            exit(3);
         }
         else
         {
@@ -341,7 +341,7 @@ void AND(char *op1, char *op2, char *op3, char *op4)
     if (*op4 != '\0')
     {
         /* Error: too many args */
-        printf("Error\n"); exit(4);
+        exit(4);
     }
     
     int dr = getRegister(op1);
@@ -351,12 +351,12 @@ void AND(char *op1, char *op2, char *op3, char *op4)
     if (dr == -1)
     {
         /* Error: invalid DR */
-        printf("Error\n"); exit(4);
+        exit(4);
     }
     if (sr1 == -1)
     {
         /* Error: invalid SR1 */
-        printf("Error\n"); exit(4);
+        exit(4);
     }
     if (sr2 == -1) /* Handle case for immediate values */
     {
@@ -364,7 +364,7 @@ void AND(char *op1, char *op2, char *op3, char *op4)
         if (sr2 < -16 || sr2 > 15)
         {
             /* Error: Invalid immediate value */
-            printf("Error: Invalid Constant\n"); exit(3);
+            exit(3);
         }
         else
         {
@@ -386,19 +386,19 @@ void BR(char *op1, char *op2, char *op3, char *op4)
     if (*op2 != '\0' || *op3 != '\0' || *op4 != '\0')
     {
         /* Error: too many arguments */
-        printf("Error\n"); exit(4);
+        exit(4);
     }
     labelAddress = getAddress(op1);
     if (labelAddress == -1)
     {
         /* Error: undefined label */
-        printf("Error: Undefined Label\n"); exit(1);
+        exit(1);
     }
     pcOffset = (labelAddress - (currentAddress + 2)) / 2;;
     if (pcOffset < -256 || pcOffset > 255)
     {
         /* Offset out of bounds */
-        printf("Error\n"); exit(4);
+        exit(4);
     }
     instruction += (pcOffset & 0x01FF);
     fprintf(outfile, "0x%0.4X\n", instruction);
@@ -410,19 +410,19 @@ void BRN(char *op1, char *op2, char *op3, char *op4)
     if (*op2 != '\0' || *op3 != '\0' || *op4 != '\0')
     {
         /* Error: too many arguments */
-        printf("Error\n"); exit(4);
+        exit(4);
     }
     labelAddress = getAddress(op1);
     if (labelAddress == -1)
     {
         /* Error: undefined label */
-        printf("Error: Undefined Label\n"); exit(1);
+        exit(1);
     }
     pcOffset = (labelAddress - (currentAddress + 2)) / 2;
     if (pcOffset < -256 || pcOffset > 255)
     {
         /* Offset out of bounds */
-        printf("Error\n"); exit(4);
+        exit(4);
     }
     instruction += (pcOffset & 0x01FF);
     fprintf(outfile, "0x%0.4X\n", instruction);
@@ -434,19 +434,19 @@ void BRZ(char *op1, char *op2, char *op3, char *op4)
     if (*op2 != '\0' || *op3 != '\0' || *op4 != '\0')
     {
         /* Error: too many arguments */
-        printf("Error\n"); exit(4);
+        exit(4);
     }
     labelAddress = getAddress(op1);
     if (labelAddress == -1)
     {
         /* Error: undefined label */
-        printf("Error: Undefined Label\n"); exit(1);
+        exit(1);
     }
     pcOffset = (labelAddress - (currentAddress + 2)) / 2;
     if (pcOffset < -256 || pcOffset > 255)
     {
         /* Offset out of bounds */
-        printf("Error\n"); exit(4);
+        exit(4);
     }
     instruction += (pcOffset & 0x01FF);
     fprintf(outfile, "0x%0.4X\n", instruction);
@@ -458,19 +458,19 @@ void BRP(char *op1, char *op2, char *op3, char *op4)
     if (*op2 != '\0' || *op3 != '\0' || *op4 != '\0')
     {
         /* Error: too many arguments */
-        printf("Error\n"); exit(4);
+        exit(4);
     }
     labelAddress = getAddress(op1);
     if (labelAddress == -1)
     {
         /* Error: undefined label */
-        printf("Error: Undefined Label\n"); exit(1);
+        exit(1);
     }
     pcOffset = (labelAddress - (currentAddress + 2)) / 2;
     if (pcOffset < -256 || pcOffset > 255)
     {
         /* Offset out of bounds */
-        printf("Error\n"); exit(4);
+        exit(4);
     }
     instruction += (pcOffset & 0x01FF);
     fprintf(outfile, "0x%0.4X\n", instruction);
@@ -482,19 +482,19 @@ void BRNZ(char *op1, char *op2, char *op3, char *op4)
     if (*op2 != '\0' || *op3 != '\0' || *op4 != '\0')
     {
         /* Error: too many arguments */
-        printf("Error\n"); exit(4);
+        exit(4);
     }
     labelAddress = getAddress(op1);
     if (labelAddress == -1)
     {
         /* Error: undefined label */
-        printf("Error: Undefined Label\n"); exit(1);
+        exit(1);
     }
     pcOffset = (labelAddress - (currentAddress + 2)) / 2;
     if (pcOffset < -256 || pcOffset > 255)
     {
         /* Offset out of bounds */
-        printf("Error\n"); exit(4);
+        exit(4);
     }
     instruction += (pcOffset & 0x01FF);
     fprintf(outfile, "0x%0.4X\n", instruction);
@@ -506,19 +506,19 @@ void BRZP(char *op1, char *op2, char *op3, char *op4)
     if (*op2 != '\0' || *op3 != '\0' || *op4 != '\0')
     {
         /* Error: too many arguments */
-        printf("Error\n"); exit(4);
+        exit(4);
     }
     labelAddress = getAddress(op1);
     if (labelAddress == -1)
     {
         /* Error: undefined label */
-        printf("Error: Undefined Label\n"); exit(1);
+        exit(1);
     }
     pcOffset = (labelAddress - (currentAddress + 2)) / 2;
     if (pcOffset < -256 || pcOffset > 255)
     {
         /* Offset out of bounds */
-        printf("Error\n"); exit(4);
+        exit(4);
     }
     instruction += (pcOffset & 0x01FF);
     fprintf(outfile, "0x%0.4X\n", instruction);
@@ -530,19 +530,19 @@ void BRNP(char *op1, char *op2, char *op3, char *op4)
     if (*op2 != '\0' || *op3 != '\0' || *op4 != '\0')
     {
         /* Error: too many arguments */
-        printf("Error\n"); exit(4);
+        exit(4);
     }
     labelAddress = getAddress(op1);
     if (labelAddress == -1)
     {
         /* Error: undefined label */
-        printf("Error: Undefined Label\n"); exit(1);
+        exit(1);
     }
     pcOffset = (labelAddress - (currentAddress + 2)) / 2;
     if (pcOffset < -256 || pcOffset > 255)
     {
         /* Offset out of bounds */
-        printf("Error\n"); exit(4);
+        exit(4);
     }
     instruction += (pcOffset & 0x01FF);
     fprintf(outfile, "0x%0.4X\n", instruction);
@@ -554,7 +554,7 @@ void HALT(char *op1, char *op2, char *op3, char *op4)
     if (*op2 != '\0' || *op3 != '\0' || *op4 != '\0')
     {
         /* Error: too many arguments */
-        printf("Error\n"); exit(4);
+        exit(4);
     }
     fprintf(outfile, "0x%0.4X\n", instruction);
 }
@@ -565,12 +565,12 @@ void JMP(char *op1, char *op2, char *op3, char *op4)
     if (*op2 != '\0' || *op3 != '\0' || *op4 != '\0')
     {
         /* Error: too many arguments */
-        printf("Error\n"); exit(4);
+        exit(4);
     }
     sr1 = getRegister(op1);
     if (sr1 == -1)
     {
-        printf("Error\n"); exit(4);
+        exit(4);
     }
     instruction += (sr1 << 6);
     fprintf(outfile, "0x%0.4X\n", instruction);
@@ -582,18 +582,18 @@ void JSR(char *op1, char *op2, char *op3, char *op4)
     if (*op2 != '\0' || *op3 != '\0' || *op4 != '\0')
     {
         /* Error: too many arguments */
-        printf("Error\n"); exit(4);
+        exit(4);
     }
     labelAddress = getAddress(op1);
     if (labelAddress == -1)
     {
         /* Error: undefined label */
-        printf("Error: Undefined Label\n"); exit(1);
+        exit(1);
     }
     pcOffset = (labelAddress - (currentAddress + 2)) / 2;
     if (pcOffset < -1024 || pcOffset > 1023)
     {
-        printf("Error\n"); exit(4);
+        exit(4);
     }
     instruction += (1 << 11) + (pcOffset & 0x07FF);
     fprintf(outfile, "0x%0.4X\n", instruction);
@@ -605,12 +605,12 @@ void JSRR(char *op1, char *op2, char *op3, char *op4)
     if (*op2 != '\0' || *op3 != '\0' || *op4 != '\0')
     {
         /* Error: too many arguments */
-        printf("Error\n"); exit(4);
+        exit(4);
     }
     sr1 = getRegister(op1);
     if (sr1 == -1)
     {
-        printf("Error\n"); exit(4);
+        exit(4);
     }
     instruction += (sr1 << 6);
     fprintf(outfile, "0x%0.4X\n", instruction);
@@ -621,14 +621,14 @@ void LDB(char *op1, char *op2, char *op3, char *op4)
     instruction = 0x2000;
     if (*op4 != '\0')
     {
-        printf("Error\n"); exit(4);
+        exit(4);
     }
     dr = getRegister(op1);
     sr1 = getRegister(op2);
     pcOffset = toNum(op3);
     if (pcOffset < -32 || pcOffset > 31)
     {
-        printf("Error\n"); exit(4);
+        exit(4);
     }
     instruction += (dr << 9) + (sr1 << 6) + (pcOffset & 0x003F);
     fprintf(outfile, "0x%0.4X\n", instruction);
@@ -639,14 +639,14 @@ void LDW(char *op1, char *op2, char *op3, char *op4)
     instruction = 0x6000;
     if (*op4 != '\0')
     {
-        printf("Error\n"); exit(4);
+        exit(4);
     }
     dr = getRegister(op1);
     sr1 = getRegister(op2);
     pcOffset = toNum(op3) << 1;
     if (pcOffset < -32 || pcOffset > 31)
     {
-        printf("Error\n"); exit(4);
+        exit(4);
     }
     instruction += (dr << 9) + (sr1 << 6) + (pcOffset & 0x003F);
     fprintf(outfile, "0x%0.4X\n", instruction);
@@ -657,15 +657,15 @@ void LEA(char *op1, char *op2, char *op3, char *op4)
     instruction = 0xE000;
     if (*op3 != '\0' || *op4 != '\0')
     {
-        printf("Error\n"); exit(4);
+        exit(4);
     }
     dr = getRegister(op1);
     labelAddress = getAddress(op2);
-    if (labelAddress == -1) { printf("Error: Undefined Label\n"); exit(1); }
+    if (labelAddress == -1) { exit(1); }
     pcOffset = (labelAddress - (currentAddress + 2)) / 2;
     if (pcOffset < -256 || pcOffset > 255)
     {
-        printf("Error\n"); exit(4);
+        exit(4);
     }
     instruction += (dr << 9) + (pcOffset & 0x01FF);
     fprintf(outfile, "0x%0.4X\n", instruction);
@@ -676,7 +676,7 @@ void NOT(char *op1, char *op2, char *op3, char *op4)
     instruction = 0x9000;
     if (*op3 != '\0' || *op4 != '\0')
     {
-        printf("Error\n"); exit(4);
+        exit(4);
     }
     dr = getRegister(op1);
     sr1 = getRegister(op2);
@@ -689,14 +689,14 @@ void LSHF(char *op1, char *op2, char *op3, char *op4)
     instruction = 0xD000;
     if (*op4 != '\0')
     {
-        printf("Error\n"); exit(4);
+        exit(4);
     }
     dr = getRegister(op1);
     sr1 = getRegister(op2);
     sr2 = toNum(op3);
     if (sr2 < 0 || sr2 > 15)
     {
-        printf("Error: Invalid Constant\n"); exit(3);
+        exit(3);
     }
     instruction += (dr << 9) + (sr1 << 6) + (sr2 & 0x000F);
     fprintf(outfile, "0x%0.4X\n", instruction);
@@ -707,14 +707,14 @@ void RSHFL(char *op1, char *op2, char *op3, char *op4)
     instruction = 0xD000;
     if (*op4 != '\0')
     {
-        printf("Error\n"); exit(4);
+        exit(4);
     }
     dr = getRegister(op1);
     sr1 = getRegister(op2);
     sr2 = toNum(op3);
     if (sr2 < 0 || sr2 > 15)
     {
-        printf("Error: Invalid Constant\n"); exit(3);
+        exit(3);
     }
     instruction += (dr << 9) + (sr1 << 6) + (1 << 4) + (sr2 & 0x000F);
     fprintf(outfile, "0x%0.4X\n", instruction);
@@ -725,14 +725,14 @@ void RSHFA(char *op1, char *op2, char *op3, char *op4)
     instruction = 0xD000;
     if (*op4 != '\0')
     {
-        printf("Error\n"); exit(4);
+        exit(4);
     }
     dr = getRegister(op1);
     sr1 = getRegister(op2);
     sr2 = toNum(op3);
     if (sr2 < 0 || sr2 > 15)
     {
-        printf("Error: Invalid Constant\n"); exit(3);
+        exit(3);
     }
     instruction += (dr << 9) + (sr1 << 6) + (3 << 4) + (sr2 & 0x000F);
     fprintf(outfile, "0x%0.4X\n", instruction);
@@ -743,14 +743,14 @@ void STB(char *op1, char *op2, char *op3, char *op4)
     instruction = 0x3000;
     if (*op4 != '\0')
     {
-        printf("Error\n"); exit(4);
+        exit(4);
     }
     sr1 = getRegister(op1);
     sr2 = getRegister(op2);
     pcOffset = toNum(op3);
     if (pcOffset < -32 || pcOffset > 31)
     {
-        printf("Error\n"); exit(4);
+        exit(4);
     }
     instruction += (sr1 << 9) + (sr2 << 6) + (pcOffset & 0x003F);
     fprintf(outfile, "0x%0.4X\n", instruction);
@@ -761,14 +761,14 @@ void STW(char *op1, char *op2, char *op3, char *op4)
     instruction = 0x7000;
     if (*op4 != '\0')
     {
-        printf("Error\n"); exit(4);
+        exit(4);
     }
     sr1 = getRegister(op1);
     sr2 = getRegister(op2);
     pcOffset = toNum(op3) << 1;
     if (pcOffset < -32 || pcOffset > 31)
     {
-        printf("Error\n"); exit(4);
+        exit(4);
     }
     instruction += (sr1 << 9) + (sr2 << 6) + (pcOffset & 0x003F);
     fprintf(outfile, "0x%0.4X\n", instruction);
@@ -779,12 +779,12 @@ void TRAP(char *op1, char *op2, char *op3, char *op4)
     instruction = 0xF000;
     if (*op2 != '\0' || *op3 != '\0' || *op4 != '\0')
     {
-        printf("Error\n"); exit(4);
+        exit(4);
     }
     int vector = toNum(op1);
     if (vector != 0x0020 && vector != 0x0021 && vector != 0x0022 && vector != 0x0023 && vector != 0x0025)
     {
-        printf("Error\n"); exit(4);
+        exit(4);
     }
     instruction += (vector & 0x00FF);
     fprintf(outfile, "0x%0.4X\n", instruction);
@@ -795,7 +795,7 @@ void XOR(char *op1, char *op2, char *op3, char *op4)
     instruction = 0x9000;
     if (*op4 != '\0')
     {
-        printf("Error\n"); exit(4);
+        exit(4);
     }
     dr = getRegister(op1);
     sr1 = getRegister(op2);
@@ -806,7 +806,7 @@ void XOR(char *op1, char *op2, char *op3, char *op4)
         if (sr2 < -16 || sr2 > 15)
         {
             /* Error: Invalid immediate value */
-            printf("Error: Invalid Constant\n"); exit(3);
+            exit(3);
         }
         else
         {
@@ -824,12 +824,12 @@ void FILL(char *op1, char *op2, char *op3, char *op4)
 {
     if (*op2 != '\0' || *op3 != '\0' || op4[0] != '\0')
     {
-        printf("Error\n"); exit(4);
+        exit(4);
     }
     sr1 = toNum(op1);
     if (sr1 < -32768 || sr1 > 32767)
     {
-        printf("Error: Invalid Constant\n"); exit(3);
+        exit(3);
     }
     sr1 &= 0xFFFF;
     fprintf(outfile, "0x%0.4X\n", sr1);
@@ -839,25 +839,26 @@ void FILL(char *op1, char *op2, char *op3, char *op4)
 int main(int argc, char *argv[])
 {
     /* open the source file */
+    /*
      infile = fopen(argv[1], "r");
      outfile = fopen(argv[2], "w");
      
      if (!infile)
      {
      printf("Error: Cannot open file %s\n", argv[1]);
-     printf("Error\n"); exit(4);
+     exit(4);
      }
      
      if (!outfile)
      {
      printf("Error: Cannot open file %s\n", argv[2]);
-     printf("Error\n"); exit(4);
+     exit(4);
      }
+     */
     
-/*
-    infile = fopen("countOdd.asm", "r");
-    outfile = fopen("countOdd.obj", "w");
-*/
+    infile = fopen("test.s", "r");
+    outfile = fopen("out", "w");
+    
     
     /* pass 1 */
     labelCount = 0;
@@ -878,25 +879,25 @@ int main(int argc, char *argv[])
                 {
                     /* Error: Origin address out of bounds */
                     fclose(infile);
-                    printf("Error: Invalid Constant\n"); exit(3);
+                    exit(3);
                 }
                 if (startAddress % 2 != 0)
                 {
                     /* Error: Origin address must be even */
                     fclose(infile);
-                    printf("Error: Invalid Constant\n"); exit(3);
+                    exit(3);
                 }
                 if (*lArg2 != '\0')
                 {
                     /* Error: Too many arguments */
                     fclose(infile);
-                    printf("Error\n"); exit(4);
+                    exit(4);
                 }
                 if (startFlag == 1)
                 {
                     /* Error: Already initialized .ORIG */
                     fclose(infile);
-                    printf("Error\n"); exit(4);
+                    exit(4);
                 }
                 startFlag = 1;
                 currentAddress = startAddress;
@@ -908,7 +909,7 @@ int main(int argc, char *argv[])
                 {
                     /* Error: File does not begin with .ORIG */
                     fclose(infile);
-                    printf("Error\n"); exit(4);
+                    exit(4);
                 }
                 stopFlag = 1;
                 break;
@@ -919,13 +920,13 @@ int main(int argc, char *argv[])
                 {
                     /* Error: File does not begin with .ORIG */
                     fclose(infile);
-                    printf("Error\n"); exit(4);
+                    exit(4);
                 }
                 if (validLabel(lLabel) == -1)
                 {
                     /* Error: Invalid Label */
                     fclose(infile);
-                    printf("Error\n"); exit(4);
+                    exit(4);
                 }
                 /* Add Label to Symbol Table */
                 strcpy(symbolTable[labelCount].label, lLabel);
@@ -940,7 +941,7 @@ int main(int argc, char *argv[])
     if (stopFlag == 0)
     {
         /* Error: No .end in file */
-        printf("Error\n"); exit(4);
+        exit(4);
     }
     /* End of Pass 1 */
     
@@ -963,14 +964,13 @@ int main(int argc, char *argv[])
             else if (isOpcode(lOpcode) == -1 && isPseudoOp(lOpcode) == -1)
             {
                 /* Error: Invalid opcode */
-                printf("Error: Invalid Opcode\n"); exit(2);
+                exit(2);
             }
             else /* Handle Opcodes PseudoOps */
             {
                 if (strcmp(lOpcode, "add") == 0) { ADD(lArg1, lArg2, lArg3, lArg4); }
                 else if (strcmp(lOpcode, "and") == 0) { AND(lArg1, lArg2, lArg3, lArg4); }
-                else if (strcmp(lOpcode, "br") == 0 || strcmp(lOpcode, "brnzp") == 0)
-                { BR(lArg1, lArg2, lArg3, lArg4); }
+                else if (strcmp(lOpcode, "br") == 0 || strcmp(lOpcode, "brnzp") == 0) { BR(lArg1, lArg2, lArg3, lArg4); }
                 else if (strcmp(lOpcode, "brn") == 0) { BRN(lArg1, lArg2, lArg3, lArg4); }
                 else if (strcmp(lOpcode, "brz") == 0) { BRZ(lArg1, lArg2, lArg3, lArg4); }
                 else if (strcmp(lOpcode, "brp") == 0) { BRP(lArg1, lArg2, lArg3, lArg4); }
@@ -1005,6 +1005,3 @@ int main(int argc, char *argv[])
     fclose(outfile);
     exit(0);
 }
-
-
-
