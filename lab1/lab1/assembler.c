@@ -839,7 +839,7 @@ void FILL(char *op1, char *op2, char *op3, char *op4)
 int main(int argc, char *argv[])
 {
     /* open the source file */
-    /*
+
      infile = fopen(argv[1], "r");
      outfile = fopen(argv[2], "w");
      
@@ -854,11 +854,11 @@ int main(int argc, char *argv[])
      printf("Error: Cannot open file %s\n", argv[2]);
      exit(4);
      }
-     */
-    
+     
+/*
     infile = fopen("test.s", "r");
     outfile = fopen("out", "w");
-    
+*/
     
     /* pass 1 */
     labelCount = 0;
