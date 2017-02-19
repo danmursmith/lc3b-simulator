@@ -416,6 +416,21 @@ int main(int argc, char *argv[]) {
 */
 
 /***************************************************************/
+
+#define bits2_0(x) (x & 0x0007)
+#define bits3_0(x) (x & 0x000F)
+#define bits4_0(x) (x & 0x001F)
+#define bits5_0(x) (x & 0x003F)
+#define bits8_0(x) (x & 0x01FF)
+#define bits10_0(x) (x & 0x07FF)
+#define bits7_0(x) (x & 0x00FF)
+#define bit5(x) (x & 0x0020)
+#define bit11(x) (x & 0x0800)
+#define bits5_4(x) ((x & 0x0030) >> 4)
+#define bits8_6(x) ((x & 0x01C0) >> 6)
+#define bits11_9(x) ((x & 0x0E00) >> 9)
+
+
 enum
 {
     BR, ADD, LDB, STB, JSR, AND, LDW, STW,
@@ -459,9 +474,17 @@ int SEXT32(int val)
     return val;
 }
 
-int SEXT(int val, int msb)
+int SEXT(int val)
 {
-    int i, mask;
+    int msb, mask, i;
+    temp = val;
+    msb = 1;
+    while (temp != 0)
+    {
+        msb <<= 1;
+        temp >>= 1;
+    }
+    msb >>= 1;
     if (val & msb)
     {
         msb >>= 1;
@@ -475,8 +498,6 @@ int SEXT(int val, int msb)
     }
     return val;
 }
-
-int SEXT
 
 void set_condition_bits()
 {
@@ -518,19 +539,19 @@ void process_instruction(){
     switch(opcode)
     {
         case ADD:
-            dr = (instruction & 0x0E00) >> 9;
-            sr1 = (instruction & 0x01C0) >> 6;
-            if (instruction & 0x0020)
+            dr = bits11_9(instruction);
+            sr1 = bits8_6(instruction);
+            if (bit5(instruction))
             {
                 /* immediate */
-                immediate = SEXT((instruction & 0x001F), 0x0010);
+                immediate = SEXT(bits4_0(instruction));
                 NEXT_LATCHES.REGS[dr] = Low16bits(SEXT32(CURRENT_LATCHES.REGS[sr1]) + immediate);
                 printf("ADD\t\tR%d, R%d, #%d\n", dr, sr1, immediate);
             }
             else
             {
                 /* register */
-                sr2 = (instruction & 0x0007);
+                sr2 = bits2_0(instruction);
                 NEXT_LATCHES.REGS[dr] = Low16bits(SEXT32(CURRENT_LATCHES.REGS[sr1]) +
                                                   SEXT32(CURRENT_LATCHES.REGS[sr2]));
                 printf("ADD\t\tR%d, R%d, R%d\n", dr, sr1, sr2);
@@ -539,19 +560,19 @@ void process_instruction(){
             break;
 
         case AND:
-            dr = (instruction & 0x0E00) >> 9;
-            sr1 = (instruction & 0x01C0) >> 6;
-            if (instruction & 0x0020)
+            dr = bits11_9(instruction);
+            sr1 = bits8_6(instruction);
+            if (bit5(instruction))
             {
                 /* immediate */
-                immediate = SEXT((instruction & 0x001F), 0x0010);
+                immediate = SEXT(bits4_0(instruction));
                 NEXT_LATCHES.REGS[dr] = Low16bits(SEXT32(CURRENT_LATCHES.REGS[sr1]) & immediate);
                 printf("AND\t\tR%d, R%d, #%d\n", dr, sr1, immediate);
             }
             else
             {
                 /* register */
-                sr2 = (instruction & 0x0007);
+                sr2 = bits2_0(instruction);
                 NEXT_LATCHES.REGS[dr] = Low16bits(SEXT32(CURRENT_LATCHES.REGS[sr1]) &
                                                   SEXT32(CURRENT_LATCHES.REGS[sr2]));
                 printf("AND\t\tR%d, R%d, R%d\n", dr, sr1, sr2);
@@ -560,8 +581,8 @@ void process_instruction(){
             break;
 
         case BR:
-            condition = (instruction & 0x0E00) >> 9;
-            offset = SEXT(instruction & 0x01FF, 0x0100) << 1;
+            condition = bits11_9(instruction);
+            offset = SEXT(bits8_0(instruction)) << 1;
             switch (condition)
             {
                 case BR_:
@@ -570,68 +591,48 @@ void process_instruction(){
                     printf("BR\t\t#%d\n", offset);
                     break;
                 case BRN:
-                    if (CURRENT_LATCHES.N == 1)
-                    {
-                        NEXT_LATCHES.PC = offset;
-                    }
+                    if (CURRENT_LATCHES.N == 1) NEXT_LATCHES.PC = offset;
                     printf("BRn\t\t#%d\n", offset);
                     break;
                 case BRZ:
-                    if (CURRENT_LATCHES.Z == 1)
-                    {
-                        NEXT_LATCHES.PC += offset;
-                    }
+                    if (CURRENT_LATCHES.Z == 1) NEXT_LATCHES.PC += offset;
                     printf("BRz\t\t#%d\n", offset);
                     break;
                 case BRP:
-                    if (CURRENT_LATCHES.P == 1)
-                    {
-                        NEXT_LATCHES.PC += offset;
-                    }
+                    if (CURRENT_LATCHES.P == 1) NEXT_LATCHES.PC += offset;
                     printf("BRp\t\t#%d\n", offset);
                     break;
                 case BRNZ:
-                    if (CURRENT_LATCHES.N == 1 || CURRENT_LATCHES.Z == 1)
-                    {
-                        NEXT_LATCHES.PC += offset;
-                    }
-                    printf("BRnz\t#%d\n", offset);
+                    if (CURRENT_LATCHES.N == 1 || CURRENT_LATCHES.Z == 1) NEXT_LATCHES.PC += offset;
                     break;
                 case BRZP:
-                    if (CURRENT_LATCHES.Z == 1 || CURRENT_LATCHES.P == 1)
-                    {
-                        NEXT_LATCHES.PC += offset;
-                    }
+                    if (CURRENT_LATCHES.Z == 1 || CURRENT_LATCHES.P == 1) NEXT_LATCHES.PC += offset;
                     printf("BRzp\t#%d\n", offset);
                     break;
                 case BRNP:
-                    if (CURRENT_LATCHES.N == 1 || CURRENT_LATCHES.P == 1)
-                    {
-                        NEXT_LATCHES.PC += offset;
-                    }
+                    if (CURRENT_LATCHES.N == 1 || CURRENT_LATCHES.P == 1) NEXT_LATCHES.PC += offset;
                     printf("BRnp\t#%d\n", offset);
                     break;
             }
             break;
 
         case JMP:
-            base = (instruction & 0x01C0) >> 6;
+            base = bits8_6(instruction);
             printf("JMP\t\tR%d\n", base);
             NEXT_LATCHES.PC = base;
             break;
 
         case JSR:
             temp = NEXT_LATCHES.PC;
-            //NEXT_LATCHES.REGS[7] = NEXT_LATCHES.PC;
-            if (instruction & 0x0800)   /* JSR */
+            if (bit11(instruction))   /* JSR */
             {
-                offset = SEXT((instruction & 0x07FF), 0x0800);
+                offset = SEXT(bits10_0(instruction));
                 NEXT_LATCHES.PC += offset;
                 printf("JSR\t\t#%d\n", offset);
             }
             else                        /* JSRR */
             {
-                base = (instruction & 0x01C0) >> 6;
+                base = bits8_6(instruction);
                 NEXT_LATCHES.PC = base;
                 printf("JSRR\t\tR%d\n", base);
             }
@@ -639,20 +640,20 @@ void process_instruction(){
             break;
 
         case LDB:
-            dr = (instruction & 0x0E00) >> 9;
-            base = (instruction & 0x01C0) >> 6;
-            offset = SEXT((instruction & 0x003F), 0x0020);
+            dr = bits11_9(instruction);
+            base = bits8_6(instruction);
+            offset = SEXT(bits5_0(instruction));
             baseVal = CURRENT_LATCHES.REGS[base];
-            NEXT_LATCHES.REGS[dr] = Low16bits(SEXT(MEMORY[(baseVal + offset) >> 1][(baseVal + offset) & 0x0001], 0x0080));
+            NEXT_LATCHES.REGS[dr] = Low16bits(SEXT(MEMORY[(baseVal + offset) >> 1][(baseVal + offset) & 0x0001]));
             printf("LDB\t\tR%d, R%d, #%d\n", dr, base, offset);
             set_condition_bits();
             break;
 
         case LDW:
-            dr = (instruction & 0x0E00) >> 9;
-            base = (instruction & 0x01C0) >> 6;
-            offset = SEXT((instruction & 0x003F), 0x0020) << 1;
-            baseVal = CURRENT_LATCHES.REGS[(instruction & 0x01C0) >> 6];
+            dr = bits11_9(instruction);
+            base = bits8_6(instruction);
+            offset = SEXT(bits5_0(instruction)) << 1;
+            baseVal = CURRENT_LATCHES.REGS[bits8_6(instruction)];
             NEXT_LATCHES.REGS[dr] = MEMORY[(baseVal + offset) >> 1][0];
             NEXT_LATCHES.REGS[dr] += (MEMORY[(baseVal + offset) >> 1][1]) << 8;
             printf("LDW\t\tR%d, R%d, #%d\n", dr, base, offset);
@@ -660,26 +661,26 @@ void process_instruction(){
             break;
 
         case LEA:
-            dr = (instruction & 0x0E00) >> 9;
-            offset = SEXT((instruction & 0x01FF), 0x0100) << 1;
+            dr = bits11_9(instruction);
+            offset = SEXT((bits8_0(instruction))) << 1;
             NEXT_LATCHES.REGS[dr] = offset + NEXT_LATCHES.PC;
             printf("LEA\t\tR%d, #%d\n", dr, offset);
             break;
 
         case XOR:
-            dr = (instruction & 0x0E00) >> 9;
-            sr1 = (instruction & 0x01C0) >> 6;
-            if (instruction & 0x0020)
+            dr = bits11_9(instruction);
+            sr1 = bits8_6(instruction);
+            if (bit5(instruction))
             {
                 /* immediate */
-                immediate = SEXT((instruction & 0x001F), 0x0010);
+                immediate = SEXT(bits4_0(instruction));
                 NEXT_LATCHES.REGS[dr] = Low16bits(SEXT32(CURRENT_LATCHES.REGS[sr1]) ^ immediate);
                 printf("XOR\t\tR%d, R%d, #%d\n", dr, sr1, immediate);
             }
             else
             {
                 /* register */
-                sr2 = (instruction & 0x0007);
+                sr2 = bits2_0(instruction);
                 NEXT_LATCHES.REGS[dr] = Low16bits(SEXT32(CURRENT_LATCHES.REGS[sr1]) ^
                                                   SEXT32(CURRENT_LATCHES.REGS[sr2]));
                 printf("XOR\t\tR%d, R%d, R%d\n", dr, sr1, sr2);
@@ -688,11 +689,11 @@ void process_instruction(){
             break;
 
         case SHF:
-            dr = (instruction & 0x0E00) >> 9;
-            sr = (instruction & 0x01C0) >> 6;
+            dr = bits11_9(instruction);
+            sr = bits8_6(instruction);
             srVal = CURRENT_LATCHES.REGS[sr];
-            shift = (instruction & 0x0030) >> 4;
-            immediate = SEXT((instruction & 0x000F), 0x0008);
+            shift = bits5_4(instruction);
+            immediate = SEXT(bits3_0(instruction));
             switch (shift)
             {
                 case LSHF:
@@ -722,20 +723,20 @@ void process_instruction(){
             break;
 
         case STB:
-            sr = (instruction & 0x0E00) >> 9;
-            base = (instruction & 0x01C0) >> 6;
-            offset = SEXT((instruction & 0x003F), 0x0020);
+            sr = bits11_9(instruction);
+            base = bits8_6(instruction);
+            offset = SEXT(bits5_0(instruction));
             /* execute */
-            srVal = CURRENT_LATCHES.REGS[sr] & 0x00FF;
+            srVal = CURRENT_LATCHES.REGS[sr];
             baseVal = CURRENT_LATCHES.REGS[base];
-            MEMORY[(baseVal + offset) >> 1][(baseVal + offset) & 0x0001] = srVal;
+            MEMORY[(baseVal + offset) >> 1][(baseVal + offset) & 0x0001] = srVal & 0x00FF;
             printf("STB\t\tR%d, R%d, #%d\n", sr, base, offset);
             break;
 
         case STW:
-            sr = (instruction & 0x0E00) >> 9;
-            base = (instruction & 0x01C0) >> 6;
-            offset = SEXT((instruction & 0x003F), 0x0020) << 1;
+            sr = bits11_9(instruction);
+            base = bits8_6(instruction);
+            offset = SEXT(bits5_0(instruction)) << 1;
             /* execute */
             srVal = CURRENT_LATCHES.REGS[sr];
             baseVal = CURRENT_LATCHES.REGS[base];
@@ -746,7 +747,7 @@ void process_instruction(){
 
         case TRAP:
             NEXT_LATCHES.REGS[7] = NEXT_LATCHES.PC;
-            vector = (instruction & 0x00FF);
+            vector = bits7_0(instruction);
             NEXT_LATCHES.PC = MEMORY[vector][0] + (MEMORY[vector][1] << 8);
             printf("TRAP\t\tx%x\n", vector);
             break;
