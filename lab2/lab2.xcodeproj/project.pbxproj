@@ -31,8 +31,8 @@
 		302AC36B1E566A5300CED640 /* shuffle.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = shuffle.obj; sourceTree = "<group>"; };
 		302AC36C1E566A5300CED640 /* test_arith.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = test_arith.obj; sourceTree = "<group>"; };
 		302AC36D1E566A5300CED640 /* test_branch.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = test_branch.obj; sourceTree = "<group>"; };
-		302AC36E1E566A5300CED640 /* test_misc.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = test_misc.obj; sourceTree = "<group>"; };
 		307A4FF91E4A55D300CD1D3F /* lab2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = lab2; sourceTree = BUILT_PRODUCTS_DIR; };
+		30BC53A71E5A63B5007C8260 /* test_misc.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = test_misc.obj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +65,7 @@
 		307A4FFB1E4A55D300CD1D3F /* lab2 */ = {
 			isa = PBXGroup;
 			children = (
+				30BC53A71E5A63B5007C8260 /* test_misc.obj */,
 				302AC3661E566A5300CED640 /* assembly.s */,
 				302AC3671E566A5300CED640 /* errors.s */,
 				302AC3681E566A5300CED640 /* factorial.obj */,
@@ -73,7 +74,6 @@
 				302AC36B1E566A5300CED640 /* shuffle.obj */,
 				302AC36C1E566A5300CED640 /* test_arith.obj */,
 				302AC36D1E566A5300CED640 /* test_branch.obj */,
-				302AC36E1E566A5300CED640 /* test_misc.obj */,
 			);
 			path = lab2;
 			sourceTree = "<group>";
