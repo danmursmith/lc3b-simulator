@@ -23,6 +23,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		307707E21E7F37DF006809B2 /* isaprogram.s */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm; path = isaprogram.s; sourceTree = "<group>"; };
 		30E7C0211E5AB6CC001B0496 /* lab3 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = lab3; sourceTree = BUILT_PRODUCTS_DIR; };
 		30E7C0241E5AB6CC001B0496 /* lc3bsim3.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = lc3bsim3.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -58,6 +59,7 @@
 			isa = PBXGroup;
 			children = (
 				30E7C0241E5AB6CC001B0496 /* lc3bsim3.c */,
+				307707E21E7F37DF006809B2 /* isaprogram.s */,
 			);
 			path = lab3;
 			sourceTree = "<group>";
@@ -246,6 +248,7 @@
 				30E7C02A1E5AB6CC001B0496 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

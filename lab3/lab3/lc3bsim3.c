@@ -84,38 +84,6 @@ enum CS_BITS {
 } CS_BITS;
 
 /***************************************************************/
-/* Functions to get at the control bits.                       */
-/***************************************************************/
-int GetIRD(int *x)           { return(x[IRD]); }
-int GetCOND(int *x)          { return((x[COND1] << 1) + x[COND0]); }
-int GetJ(int *x)             { return((x[J5] << 5) + (x[J4] << 4) +
-                                      (x[J3] << 3) + (x[J2] << 2) +
-                                      (x[J1] << 1) + x[J0]); }
-int GetLD_MAR(int *x)        { return(x[LD_MAR]); }
-int GetLD_MDR(int *x)        { return(x[LD_MDR]); }
-int GetLD_IR(int *x)         { return(x[LD_IR]); }
-int GetLD_BEN(int *x)        { return(x[LD_BEN]); }
-int GetLD_REG(int *x)        { return(x[LD_REG]); }
-int GetLD_CC(int *x)         { return(x[LD_CC]); }
-int GetLD_PC(int *x)         { return(x[LD_PC]); }
-int GetGATE_PC(int *x)       { return(x[GATE_PC]); }
-int GetGATE_MDR(int *x)      { return(x[GATE_MDR]); }
-int GetGATE_ALU(int *x)      { return(x[GATE_ALU]); }
-int GetGATE_MARMUX(int *x)   { return(x[GATE_MARMUX]); }
-int GetGATE_SHF(int *x)      { return(x[GATE_SHF]); }
-int GetPCMUX(int *x)         { return((x[PCMUX1] << 1) + x[PCMUX0]); }
-int GetDRMUX(int *x)         { return(x[DRMUX]); }
-int GetSR1MUX(int *x)        { return(x[SR1MUX]); }
-int GetADDR1MUX(int *x)      { return(x[ADDR1MUX]); }
-int GetADDR2MUX(int *x)      { return((x[ADDR2MUX1] << 1) + x[ADDR2MUX0]); }
-int GetMARMUX(int *x)        { return(x[MARMUX]); }
-int GetALUK(int *x)          { return((x[ALUK1] << 1) + x[ALUK0]); }
-int GetMIO_EN(int *x)        { return(x[MIO_EN]); }
-int GetR_W(int *x)           { return(x[R_W]); }
-int GetDATA_SIZE(int *x)     { return(x[DATA_SIZE]); }
-int GetLSHF1(int *x)         { return(x[LSHF1]); }
-
-/***************************************************************/
 /* The control store rom.                                      */
 /***************************************************************/
 int CONTROL_STORE[CONTROL_STORE_ROWS][CONTROL_STORE_BITS];
@@ -174,7 +142,109 @@ System_Latches CURRENT_LATCHES, NEXT_LATCHES;
 /***************************************************************/
 /* A cycle counter.                                            */
 /***************************************************************/
-int CYCLE_COUNT;
+int Cycle_Count = 0;
+
+/***************************************************************/
+/* Functions to get at the control bits.                       */
+/***************************************************************/
+int GetIRD() {
+    return (CURRENT_LATCHES.MICROINSTRUCTION[IRD]);
+}
+int GetCOND0() {
+    return (CURRENT_LATCHES.MICROINSTRUCTION[COND0]);
+}
+int GetCOND1() {
+    return (CURRENT_LATCHES.MICROINSTRUCTION[COND1]);
+}
+int GetR() {
+    return (CURRENT_LATCHES.READY);
+}
+int GetBEN() {
+    return (CURRENT_LATCHES.BEN);
+}
+int GetIR_11() {
+    return (CURRENT_LATCHES.IR & 0x0800) >> 11;
+}
+int GetJ() {
+    return((CURRENT_LATCHES.MICROINSTRUCTION[J5] << 5) +
+           (CURRENT_LATCHES.MICROINSTRUCTION[J4] << 4) +
+           (CURRENT_LATCHES.MICROINSTRUCTION[J3] << 3) +
+           (CURRENT_LATCHES.MICROINSTRUCTION[J2] << 2) +
+           (CURRENT_LATCHES.MICROINSTRUCTION[J1] << 1) +
+           CURRENT_LATCHES.MICROINSTRUCTION[J0]);
+}
+int GetMIO_EN() {
+    return(CURRENT_LATCHES.MICROINSTRUCTION[MIO_EN]);
+}
+int GetR_W() {
+    return(CURRENT_LATCHES.MICROINSTRUCTION[R_W]);
+}
+int GetDATA_SIZE() {
+    return(CURRENT_LATCHES.MICROINSTRUCTION[DATA_SIZE]);
+}
+int GetSR1MUX() {
+    return(CURRENT_LATCHES.MICROINSTRUCTION[SR1MUX]);
+}
+int GetADDR1MUX() {
+    return(CURRENT_LATCHES.MICROINSTRUCTION[ADDR1MUX]);
+}
+int GetADDR2MUX() {
+    return((CURRENT_LATCHES.MICROINSTRUCTION[ADDR2MUX1] << 1) +
+           CURRENT_LATCHES.MICROINSTRUCTION[ADDR2MUX0]);
+}
+int GetLSHF1() {
+    return(CURRENT_LATCHES.MICROINSTRUCTION[LSHF1]);
+}
+int GetLD_MAR() {
+    return(CURRENT_LATCHES.MICROINSTRUCTION[LD_MAR]);
+}
+int GetLD_MDR() {
+    return(CURRENT_LATCHES.MICROINSTRUCTION[LD_MDR]);
+}
+int GetLD_IR() {
+    return(CURRENT_LATCHES.MICROINSTRUCTION[LD_IR]);
+}
+int GetLD_BEN() {
+    return(CURRENT_LATCHES.MICROINSTRUCTION[LD_BEN]);
+}
+int GetLD_REG() {
+    return(CURRENT_LATCHES.MICROINSTRUCTION[LD_REG]);
+}
+int GetLD_CC() {
+    return(CURRENT_LATCHES.MICROINSTRUCTION[LD_CC]);
+}
+int GetLD_PC() {
+    return(CURRENT_LATCHES.MICROINSTRUCTION[LD_PC]);
+}
+int GetGATE_PC() {
+    return(CURRENT_LATCHES.MICROINSTRUCTION[GATE_PC]);
+}
+int GetGATE_MDR() {
+    return(CURRENT_LATCHES.MICROINSTRUCTION[GATE_MDR]);
+}
+int GetGATE_ALU() {
+    return(CURRENT_LATCHES.MICROINSTRUCTION[GATE_ALU]);
+}
+int GetGATE_MARMUX() {
+    return(CURRENT_LATCHES.MICROINSTRUCTION[GATE_MARMUX]);
+}
+int GetGATE_SHF() {
+    return(CURRENT_LATCHES.MICROINSTRUCTION[GATE_SHF]);
+}
+int GetPCMUX() {
+    return((CURRENT_LATCHES.MICROINSTRUCTION[PCMUX1] << 1) +
+           CURRENT_LATCHES.MICROINSTRUCTION[PCMUX0]);
+}
+int GetDRMUX() {
+    return(CURRENT_LATCHES.MICROINSTRUCTION[DRMUX]);
+}
+int GetMARMUX() {
+    return(CURRENT_LATCHES.MICROINSTRUCTION[MARMUX]);
+}
+int GetALUK() {
+    return((CURRENT_LATCHES.MICROINSTRUCTION[ALUK1] << 1) +
+           CURRENT_LATCHES.MICROINSTRUCTION[ALUK0]);
+}
 
 /***************************************************************/
 /*                                                             */
@@ -210,7 +280,7 @@ void cycle() {
     
     CURRENT_LATCHES = NEXT_LATCHES;
     
-    CYCLE_COUNT++;
+    Cycle_Count++;
 }
 
 /***************************************************************/
@@ -298,7 +368,7 @@ void rdump(FILE * dumpsim_file) {
     
     printf("\nCurrent register/bus values :\n");
     printf("-------------------------------------\n");
-    printf("Cycle Count  : %d\n", CYCLE_COUNT);
+    printf("Cycle Count  : %d\n", Cycle_Count);
     printf("PC           : 0x%.4x\n", CURRENT_LATCHES.PC);
     printf("IR           : 0x%.4x\n", CURRENT_LATCHES.IR);
     printf("STATE_NUMBER : 0x%.4x\n\n", CURRENT_LATCHES.STATE_NUMBER);
@@ -314,7 +384,7 @@ void rdump(FILE * dumpsim_file) {
     /* dump the state information into the dumpsim file */
     fprintf(dumpsim_file, "\nCurrent register/bus values :\n");
     fprintf(dumpsim_file, "-------------------------------------\n");
-    fprintf(dumpsim_file, "Cycle Count  : %d\n", CYCLE_COUNT);
+    fprintf(dumpsim_file, "Cycle Count  : %d\n", Cycle_Count);
     fprintf(dumpsim_file, "PC           : 0x%.4x\n", CURRENT_LATCHES.PC);
     fprintf(dumpsim_file, "IR           : 0x%.4x\n", CURRENT_LATCHES.IR);
     fprintf(dumpsim_file, "STATE_NUMBER : 0x%.4x\n\n", CURRENT_LATCHES.STATE_NUMBER);
@@ -574,14 +644,122 @@ int main(int argc, char *argv[]) {
  Begin your code here 	  			       */
 /***************************************************************/
 
+#define bit0(x)    (x & 0x0001)
+#define bits2_0(x) (x & 0x0007)
+#define bits3_0(x) (x & 0x000F)
+#define bits4_0(x) (x & 0x001F)
+#define bits5_0(x) (x & 0x003F)
+#define bits8_0(x) (x & 0x01FF)
+#define bits10_0(x) (x & 0x07FF)
+#define bits7_0(x) (x & 0x00FF)
+#define bit5(x) (x & 0x0020)
+#define bit9(x) (x & 0x0200)
+#define bit10(x) (x & 0x0400)
+#define bit11(x) (x & 0x0800)
+#define bits5_4(x) ((x & 0x0030) >> 4)
+#define bits8_6(x) ((x & 0x01C0) >> 6)
+#define bits11_9(x) ((x & 0x0E00) >> 9)
+#define bits15_8(x) ((x * 0xFF00) >> 8)
+
+int SEXT_5(int val)
+{
+    if (val & 0x0010) val |= 0xFFFFFFE0;
+    return val;
+}
+
+int SEXT_6(int val)
+{
+    if (val & 0x0020) val |= 0xFFFFFFC0;
+    return val;
+}
+
+int SEXT_8(int val)
+{
+    if (val & 0x0080) val |= 0xFFFFFF00;
+    return val;
+}
+
+int SEXT_9(int val)
+{
+    if (val & 0x0100) val |= 0xFFFFFE00;
+    return val;
+}
+
+int SEXT_11(int val)
+{
+    if (val & 0x0400) val |= 0xFFFFF800;
+    return val;
+}
+
+enum {
+    ADD, AND, XOR, PASS
+};
+
+enum {
+    LSHF, RSHFL, NA, RSHFA
+};
+
+
+int ready, branch, addr_mode,
+    next_state, mdr_data,
+    sr1_out, sr2_out, dr_out, addr1_out, addr2_out, pc_out,
+    mar_out, alu_out, shf_out, mdr_out,
+    dr, sr, srVal, shift, immediate, i;
+
+int j_state() {
+    ready = (!GetCOND1() & GetCOND0() & GetR()) << 1;       /*  */
+    branch = (GetCOND1() & !GetCOND0() & GetBEN()) << 2;    /*  */
+    addr_mode = (GetCOND1() & GetCOND0() & GetIR_11());     /*  */
+    return (ready | branch | addr_mode | GetJ());           /*  */
+}
+
+int get_opcode() {
+    return (CURRENT_LATCHES.IR & 0xF000) >> 12;
+}
+
+void latch_instruction(int state) {
+    memcpy(NEXT_LATCHES.MICROINSTRUCTION, CONTROL_STORE[state], sizeof(int)*CONTROL_STORE_BITS);
+}
+
+void set_condition_codes() {
+    if (Low16bits(BUS)) { /* non-zero */
+        if ((BUS & 0x8000) >> 15) {     /* msb */
+            NEXT_LATCHES.N = 1;
+            NEXT_LATCHES.P = 0;
+            NEXT_LATCHES.Z = 0;
+        }else {
+            NEXT_LATCHES.N = 0;
+            NEXT_LATCHES.P = 1;
+            NEXT_LATCHES.Z = 0;
+        }
+    } else {     /* zero */
+        NEXT_LATCHES.N = 0;
+        NEXT_LATCHES.P = 0;
+        NEXT_LATCHES.Z = 1;
+    }
+}
+
+void set_branch_enable() {
+    NEXT_LATCHES.BEN = (CURRENT_LATCHES.N & bit11(CURRENT_LATCHES.IR) >> 11)  |
+                       (CURRENT_LATCHES.Z & bit10(CURRENT_LATCHES.IR) >> 10) |
+                       (CURRENT_LATCHES.P & bit9(CURRENT_LATCHES.IR) >> 9);
+}
 
 void eval_micro_sequencer() {
     
     /*
-     * Evaluate the address of the next state according to the 
+     * Evaluate the address of the next state according to the
      * micro sequencer logic. Latch the next microinstruction.
      */
     
+    /* Check IRD bit to determine whether to use the opcode or J bits */
+    if (GetIRD() == 0) {    /* use J bits */
+        next_state = j_state();
+    }
+    else {  /* use opcode bits */
+        next_state = get_opcode();
+    }
+    latch_instruction(next_state);
     
 }
 
@@ -595,6 +773,48 @@ void cycle_memory() {
      * cycle to prepare microsequencer for the fifth cycle.  
      */
     
+    if (GetMIO_EN()) {
+        
+        if (Cycle_Count % 4 == 0) {             /* ready at end of this cycle */
+            NEXT_LATCHES.READY = 1;
+        } else if (CURRENT_LATCHES.READY){      /* ready to read or write */
+            
+            if (GetR_W()) {
+                if (CURRENT_LATCHES.MAR & 1) {  /* unaligned write */
+                    
+                    if (GetDATA_SIZE()) {       /* word */
+                        exit(0);                /* error: unaligned word access */
+                    } else {                    /* write high byte */
+                        MEMORY[CURRENT_LATCHES.MAR>>1][1] = (CURRENT_LATCHES.MDR & 0xFF00) >> 8;
+                    }
+                    
+                } else {                        /* aligned write */
+                    if (GetDATA_SIZE()) {       /* word */
+                        MEMORY[CURRENT_LATCHES.MAR>>1][1] = (CURRENT_LATCHES.MDR & 0xFF00) >> 8;
+                        MEMORY[CURRENT_LATCHES.MAR>>1][0] = CURRENT_LATCHES.MDR & 0x00FF;
+                    } else {                        /* write low byte */
+                        MEMORY[CURRENT_LATCHES.MAR>>1][0] = CURRENT_LATCHES.MDR & 0x00FF;
+                    }
+                }
+                
+            } else {
+                if (CURRENT_LATCHES.MAR & 1) {  /* unaligned read */
+                    if (GetDATA_SIZE()) {       /* word */
+                        exit(0);                /* error: unaligned word access */
+                    } else {
+                        mdr_data = Low16bits((MEMORY[CURRENT_LATCHES.MAR >> 1][1] & 0x00FF) << 8);
+                    }
+                } else {
+                    mdr_data = Low16bits((MEMORY[CURRENT_LATCHES.MAR >> 1][1] << 8) & 0xFF00) +
+                                         ((MEMORY[CURRENT_LATCHES.MAR >> 1][0]) & 0x00FF);
+                }
+            }
+            NEXT_LATCHES.READY = 1;
+                
+        }
+        Cycle_Count += 1;
+    }
+    
 }
 
 
@@ -604,33 +824,179 @@ void eval_bus_drivers() {
     /* 
      * Datapath routine emulating operations before driving the bus.
      * Evaluate the input of tristate drivers 
-     *             Gate_MARMUX,
+     *       Gate_MARMUX,
      *		 Gate_PC,
      *		 Gate_ALU,
      *		 Gate_SHF,
      *		 Gate_MDR.
-     */    
+     */
+
+
+    /* Gate_MARMUX */
+    sr1_out = GetSR1MUX() ? CURRENT_LATCHES.REGS[bits8_6(CURRENT_LATCHES.IR) >> 6] :
+                            CURRENT_LATCHES.REGS[bits11_9(CURRENT_LATCHES.IR) >> 9];
+    addr1_out = GetADDR1MUX() ? sr1_out : CURRENT_LATCHES.PC;
+    switch(GetADDR2MUX()) {
+        case 0:
+            addr2_out = 0;
+            break;
+        case 1:
+            addr2_out = Low16bits(SEXT_6(bits5_0(CURRENT_LATCHES.IR)));
+            break;
+        case 2:
+            addr2_out = Low16bits(SEXT_9(bits8_0(CURRENT_LATCHES.IR)));
+            break;
+        case 3:
+            addr2_out = Low16bits(SEXT_11(bits10_0(CURRENT_LATCHES.IR)));
+            break;
+    }
+    if (GetMARMUX()) {
+        if (GetLSHF1()) {
+            mar_out = addr1_out + (addr2_out << 1);
+        } else {
+            mar_out = addr1_out + addr2_out;
+        }
+    } else {
+        mar_out = Low16bits(bits7_0(CURRENT_LATCHES.IR) << 1);
+    }
     
+    /*******************
+     *                 *
+     *    Gate_ALU     *
+     *                 *
+     *******************/
+    
+    sr2_out = bit5(CURRENT_LATCHES.IR) ? Low16bits(SEXT_5(bits4_0(CURRENT_LATCHES.IR))) :
+    CURRENT_LATCHES.REGS[bits2_0(CURRENT_LATCHES.IR)];
+    
+    switch(GetALUK()) {
+        case ADD:
+            alu_out = Low16bits(CURRENT_LATCHES.REGS[sr1_out] + sr2_out);
+        case AND:
+            alu_out = Low16bits(CURRENT_LATCHES.REGS[getSR1()] & sr2_out);
+        case XOR:
+            alu_out = Low16bits(CURRENT_LATCHES.REGS[getSR1()] ^ sr2_out);
+        case PASS:
+            alu_out = Low16bits(CURRENT_LATCHES.REGS[getSR1()]);
+    }
+    
+    /*******************
+     *                 *
+     *    Gate_SHF     *
+     *                 *
+     *******************/
+    
+    sr = CURRENT_LATCHES.REGS[sr1_out];
+    immediate = bits3_0(CURRENT_LATCHES.IR);
+    switch (bits5_4(CURRENT_LATCHES.IR)) {
+        case LSHF:
+            shf_out = Low16bits(sr << immediate);
+            break;
+        case RSHFL:
+            for (i = 0; i < immediate; i++){
+                sr = ~(1 << 15) & (sr >> 1);
+            }
+            shf_out = Low16bits(sr);
+            break;
+        case RSHFA:
+            for (i = 0; i < immediate; i++)
+            {
+                sr = (sr & 0x8000) + (sr >> 1);
+            }
+            shf_out = Low16bits(sr);
+            break;
+    }
+    
+    
+    /*******************
+     *                 *
+     *    Gate_MDR     *
+     *                 *
+     *******************/
+    
+    if (bit0(CURRENT_LATCHES.MAR)) { /* Odd Address */
+        if (GetDATA_SIZE()) { exit(0); }
+        else {
+            mdr_out = Low16bits(SEXT_8(bits7_0(CURRENT_LATCHES.MDR >> 8)));
+        }
+    } else {
+        mdr_out = GetDATA_SIZE() ? Low16bits(CURRENT_LATCHES.MDR) : SEXT_8(bits7_0(CURRENT_LATCHES.MDR));
+    }
 }
 
 
 void drive_bus() {
     
-    /* 
-     * Datapath routine for driving the bus from one of the 5 possible 
-     * tristate drivers. 
-     */       
+    /*
+     * Datapath routine for driving the bus from one of the 5 possible
+     * tristate drivers.
+     */
+    
+    if (GetGATE_PC())
+        BUS = CURRENT_LATCHES.PC;
+    else if (GetGATE_MDR())
+        BUS = mdr_out;
+    else if (GetGATE_ALU())
+        BUS = alu_out;
+    else if (GetGATE_MARMUX())
+        BUS = mar_out;
+    else if (GetGATE_SHF())
+        BUS = shf_out;
     
 }
 
 
 void latch_datapath_values() {
     
-    /* 
+    /*
      * Datapath routine for computing all functions that need to latch
      * values in the data path at the end of this cycle.  Some values
      * require sourcing the bus; therefore, this routine has to come 
      * after drive_bus.
-     */       
+     */
+    
+    if (GetLD_MAR()) {
+        NEXT_LATCHES.MAR = Low16bits(BUS);
+    }
+    if (GetLD_MDR()) {
+        if (GetMIO_EN()) {
+            NEXT_LATCHES.MDR = Low16bits(mdr_data);
+        } else {
+            if (GetDATA_SIZE()) {
+                NEXT_LATCHES.MDR = Low16bits(BUS);
+            } else { /* MDR separated into different high and low bytes */
+                NEXT_LATCHES.MDR = Low16bits(((BUS & 0x00FF) << 8) + (BUS & 0x00FF));
+            }
+        }
+    }
+    if (GetLD_IR()) {
+        NEXT_LATCHES.IR = Low16bits(BUS);
+    }
+    if (GetLD_REG()) {
+        dr_out = GetDRMUX() ? 7 : bits2_0(CURRENT_LATCHES.IR >> 9);
+        NEXT_LATCHES.REGS[dr_out] = Low16bits(BUS);
+    }
+    if (GetLD_PC()) {
+        switch (GetPCMUX()) {
+            case 0:
+                pc_out = CURRENT_LATCHES.PC + 2;
+            case 1:
+                pc_out = BUS;
+            case 2:
+                if(GetLSHF1()) {
+                    pc_out = addr1_out + (addr2_out << 1);
+                }
+                else {
+                    pc_out = addr1_out + addr2_out;
+                }
+        }
+        NEXT_LATCHES.PC = pc_out;
+    }
+    if (GetLD_CC()) {
+        set_condition_codes();
+    }
+    if (GetLD_BEN()) {
+        set_branch_enable();
+    }
     
 }
