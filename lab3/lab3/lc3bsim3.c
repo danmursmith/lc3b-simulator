@@ -142,7 +142,7 @@ System_Latches CURRENT_LATCHES, NEXT_LATCHES;
 /***************************************************************/
 /* A cycle counter.                                            */
 /***************************************************************/
-int Cycle_Count = 0;
+int Cycle_Count;
 
 /***************************************************************/
 /* Functions to get at the control bits.                       */
@@ -706,6 +706,8 @@ int ready, branch, addr_mode,
     mar_out, alu_out, shf_out, mdr_out,
     dr, sr, srVal, shift, immediate, i;
 
+int cycle_count = 0;
+
 int j_state() {
     ready = (!GetCOND1() & GetCOND0() & GetR()) << 1;       /*  */
     branch = (GetCOND1() & !GetCOND0() & GetBEN()) << 2;    /*  */
@@ -775,44 +777,47 @@ void cycle_memory() {
     
     if (GetMIO_EN()) {
         
-        if (Cycle_Count % 4 == 0) {             /* ready at end of this cycle */
-            NEXT_LATCHES.READY = 1;
-        } else if (CURRENT_LATCHES.READY){      /* ready to read or write */
-            
-            if (GetR_W()) {
-                if (CURRENT_LATCHES.MAR & 1) {  /* unaligned write */
-                    
-                    if (GetDATA_SIZE()) {       /* word */
-                        exit(0);                /* error: unaligned word access */
-                    } else {                    /* write high byte */
-                        MEMORY[CURRENT_LATCHES.MAR>>1][1] = (CURRENT_LATCHES.MDR & 0xFF00) >> 8;
-                    }
-                    
-                } else {                        /* aligned write */
-                    if (GetDATA_SIZE()) {       /* word */
-                        MEMORY[CURRENT_LATCHES.MAR>>1][1] = (CURRENT_LATCHES.MDR & 0xFF00) >> 8;
-                        MEMORY[CURRENT_LATCHES.MAR>>1][0] = CURRENT_LATCHES.MDR & 0x00FF;
-                    } else {                        /* write low byte */
-                        MEMORY[CURRENT_LATCHES.MAR>>1][0] = CURRENT_LATCHES.MDR & 0x00FF;
-                    }
-                }
-                
-            } else {
-                if (CURRENT_LATCHES.MAR & 1) {  /* unaligned read */
-                    if (GetDATA_SIZE()) {       /* word */
-                        exit(0);                /* error: unaligned word access */
-                    } else {
-                        mdr_data = Low16bits((MEMORY[CURRENT_LATCHES.MAR >> 1][1] & 0x00FF) << 8);
-                    }
-                } else {
-                    mdr_data = Low16bits((MEMORY[CURRENT_LATCHES.MAR >> 1][1] << 8) & 0xFF00) +
-                                         ((MEMORY[CURRENT_LATCHES.MAR >> 1][0]) & 0x00FF);
-                }
-            }
-            NEXT_LATCHES.READY = 1;
-                
+        if (cycle_count == 5) {
+            cycle_count = 1;
+            NEXT_LATCHES.READY = 0;
         }
-        Cycle_Count += 1;
+        else {
+            if (cycle_count == 4){      /* ready to read or write */
+            
+                if (GetR_W()) {
+                    if (CURRENT_LATCHES.MAR & 1) {  /* unaligned write */
+                    
+                        if (GetDATA_SIZE()) {       /* word */
+                            exit(0);                /* error: unaligned word access */
+                        } else {                    /* write high byte */
+                            MEMORY[CURRENT_LATCHES.MAR>>1][1] = (CURRENT_LATCHES.MDR & 0xFF00) >> 8;
+                        }
+                    
+                    } else {                        /* aligned write */
+                        if (GetDATA_SIZE()) {       /* word */
+                            MEMORY[CURRENT_LATCHES.MAR>>1][1] = (CURRENT_LATCHES.MDR & 0xFF00) >> 8;
+                            MEMORY[CURRENT_LATCHES.MAR>>1][0] = CURRENT_LATCHES.MDR & 0x00FF;
+                        } else {                        /* write low byte */
+                            MEMORY[CURRENT_LATCHES.MAR>>1][0] = CURRENT_LATCHES.MDR & 0x00FF;
+                        }
+                    }
+                
+                } else {
+                    if (CURRENT_LATCHES.MAR & 1) {  /* unaligned read */
+                        if (GetDATA_SIZE()) {       /* word */
+                            exit(0);                /* error: unaligned word access */
+                        } else {
+                            mdr_data = Low16bits((MEMORY[CURRENT_LATCHES.MAR >> 1][1] & 0x00FF) << 8);
+                        }
+                    } else {
+                        mdr_data = Low16bits((MEMORY[CURRENT_LATCHES.MAR >> 1][1] << 8) & 0xFF00) +
+                                            ((MEMORY[CURRENT_LATCHES.MAR >> 1][0]) & 0x00FF);
+                    }
+                }
+                NEXT_LATCHES.READY = 1;
+            }
+            cycle_count += 1;
+        }
     }
     
 }
