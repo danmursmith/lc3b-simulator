@@ -724,8 +724,8 @@ void latch_instruction(int state) {
 }
 
 void set_condition_codes() {
-    if (Low16bits(BUS)) { /* non-zero */
-        if ((BUS & 0x8000) >> 15) {     /* msb */
+    if (Low16bits(BUS)) {               /* either positive or negative */
+        if ((BUS & 0x8000) >> 15) {     /* MSB */
             NEXT_LATCHES.N = 1;
             NEXT_LATCHES.P = 0;
             NEXT_LATCHES.Z = 0;
@@ -758,7 +758,7 @@ void eval_micro_sequencer() {
     if (GetIRD() == 0) {    /* use J bits */
         next_state = j_state();
     }
-    else {  /* use opcode bits */
+    else {                  /* use opcode bits */
         next_state = get_opcode();
     }
     latch_instruction(next_state);
@@ -777,7 +777,7 @@ void cycle_memory() {
     
     if (GetMIO_EN()) {
         
-        if (cycle_count == 5) {
+        if (cycle_count == 5) { /* finished, start over */
             cycle_count = 1;
             NEXT_LATCHES.READY = 0;
         }
@@ -789,7 +789,7 @@ void cycle_memory() {
                     
                         if (GetDATA_SIZE()) {       /* word */
                             exit(0);                /* error: unaligned word access */
-                        } else {                    /* write high byte */
+                        } else {                    /* high byte */
                             MEMORY[CURRENT_LATCHES.MAR>>1][1] = (CURRENT_LATCHES.MDR & 0xFF00) >> 8;
                         }
                     
@@ -797,7 +797,7 @@ void cycle_memory() {
                         if (GetDATA_SIZE()) {       /* word */
                             MEMORY[CURRENT_LATCHES.MAR>>1][1] = (CURRENT_LATCHES.MDR & 0xFF00) >> 8;
                             MEMORY[CURRENT_LATCHES.MAR>>1][0] = CURRENT_LATCHES.MDR & 0x00FF;
-                        } else {                        /* write low byte */
+                        } else {                    /* low byte */
                             MEMORY[CURRENT_LATCHES.MAR>>1][0] = CURRENT_LATCHES.MDR & 0x00FF;
                         }
                     }
@@ -806,10 +806,10 @@ void cycle_memory() {
                     if (CURRENT_LATCHES.MAR & 1) {  /* unaligned read */
                         if (GetDATA_SIZE()) {       /* word */
                             exit(0);                /* error: unaligned word access */
-                        } else {
+                        } else {                    /* high byte */
                             mdr_data = Low16bits((MEMORY[CURRENT_LATCHES.MAR >> 1][1] & 0x00FF) << 8);
                         }
-                    } else {
+                    } else {                        /* MDR takes word no matter what */
                         mdr_data = Low16bits((MEMORY[CURRENT_LATCHES.MAR >> 1][1] << 8) & 0xFF00) +
                                             ((MEMORY[CURRENT_LATCHES.MAR >> 1][0]) & 0x00FF);
                     }
@@ -836,8 +836,12 @@ void eval_bus_drivers() {
      *		 Gate_MDR.
      */
 
-
-    /* Gate_MARMUX */
+    
+    /*********************
+     *                   *
+     *    Gate_MARMUX    *
+     *                   *
+     *********************/
     sr1_out = GetSR1MUX() ? CURRENT_LATCHES.REGS[bits8_6(CURRENT_LATCHES.IR) >> 6] :
                             CURRENT_LATCHES.REGS[bits11_9(CURRENT_LATCHES.IR) >> 9];
     addr1_out = GetADDR1MUX() ? sr1_out : CURRENT_LATCHES.PC;
@@ -865,6 +869,9 @@ void eval_bus_drivers() {
         mar_out = Low16bits(bits7_0(CURRENT_LATCHES.IR) << 1);
     }
     
+    
+    
+    
     /*******************
      *                 *
      *    Gate_ALU     *
@@ -878,12 +885,15 @@ void eval_bus_drivers() {
         case ADD:
             alu_out = Low16bits(CURRENT_LATCHES.REGS[sr1_out] + sr2_out);
         case AND:
-            alu_out = Low16bits(CURRENT_LATCHES.REGS[getSR1()] & sr2_out);
+            alu_out = Low16bits(CURRENT_LATCHES.REGS[sr1_out] & sr2_out);
         case XOR:
-            alu_out = Low16bits(CURRENT_LATCHES.REGS[getSR1()] ^ sr2_out);
+            alu_out = Low16bits(CURRENT_LATCHES.REGS[sr1_out] ^ sr2_out);
         case PASS:
-            alu_out = Low16bits(CURRENT_LATCHES.REGS[getSR1()]);
+            alu_out = Low16bits(CURRENT_LATCHES.REGS[sr1_out]);
     }
+    
+    
+    
     
     /*******************
      *                 *
@@ -911,6 +921,8 @@ void eval_bus_drivers() {
             shf_out = Low16bits(sr);
             break;
     }
+    
+    
     
     
     /*******************
