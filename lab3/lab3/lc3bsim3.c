@@ -606,7 +606,7 @@ int main(int argc, char *argv[]) {
     
     /* Error Checking */
 
-    /*
+
     if (argc < 3) {
         printf("Error: usage: %s <micro_code_file> <program_file_1> <program_file_2> ...\n",
                argv[0]);
@@ -617,12 +617,12 @@ int main(int argc, char *argv[]) {
     printf("LC-3b Simulator\n\n");
     
     initialize(argv[1], argv[2], argc - 2);
-    */
     
-    
+    /*
     char* arg1 = "ucode3";
     char* arg2 = "tests/testA/5.hex";
     initialize(arg1, arg2, 1);
+     */
     
     if ( (dumpsim_file = fopen( "dumpsim", "w" )) == NULL ) {
         printf("Error: Can't open dumpsim file\n");
@@ -887,21 +887,20 @@ void eval_bus_drivers() {
      *                 *
      *******************/
     
-    sr2_out = bit5(CURRENT_LATCHES.IR) ? Low16bits(SEXT_5(bits4_0(CURRENT_LATCHES.IR))) :
-    CURRENT_LATCHES.REGS[bits2_0(CURRENT_LATCHES.IR)];
+    sr2_out = bit5(CURRENT_LATCHES.IR) ? Low16bits(SEXT_5(bits4_0(CURRENT_LATCHES.IR))) : CURRENT_LATCHES.REGS[bits2_0(CURRENT_LATCHES.IR)];
     
     switch(GetALUK()) {
         case ADD:
-            alu_out = Low16bits(CURRENT_LATCHES.REGS[sr1_out] + sr2_out);
+            alu_out = Low16bits(sr1_out + sr2_out);
             break;
         case AND:
-            alu_out = Low16bits(CURRENT_LATCHES.REGS[sr1_out] & sr2_out);
+            alu_out = Low16bits(sr1_out & sr2_out);
             break;
         case XOR:
-            alu_out = Low16bits(CURRENT_LATCHES.REGS[sr1_out] ^ sr2_out);
+            alu_out = Low16bits(sr1_out ^ sr2_out);
             break;
         case PASS:
-            alu_out = Low16bits(CURRENT_LATCHES.REGS[sr1_out]);
+            alu_out = Low16bits(sr1_out);
             break;
     }
     
