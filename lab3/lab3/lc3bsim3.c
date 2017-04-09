@@ -591,12 +591,6 @@ void initialize(char *ucode_filename, char *program_filename, int num_prog_files
     CURRENT_LATCHES.STATE_NUMBER = INITIAL_STATE_NUMBER;
     memcpy(CURRENT_LATCHES.MICROINSTRUCTION, CONTROL_STORE[INITIAL_STATE_NUMBER], sizeof(int)*CONTROL_STORE_BITS);
     
-    for (i = 0; i < 6; i++) {
-        CURRENT_LATCHES.REGS[i] = i;
-    }
-    CURRENT_LATCHES.REGS[6] = 4662;
-    CURRENT_LATCHES.REGS[7] = 43981;
-    
     NEXT_LATCHES = CURRENT_LATCHES;
     
     RUN_BIT = TRUE;
