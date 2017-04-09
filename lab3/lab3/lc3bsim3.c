@@ -591,6 +591,12 @@ void initialize(char *ucode_filename, char *program_filename, int num_prog_files
     CURRENT_LATCHES.STATE_NUMBER = INITIAL_STATE_NUMBER;
     memcpy(CURRENT_LATCHES.MICROINSTRUCTION, CONTROL_STORE[INITIAL_STATE_NUMBER], sizeof(int)*CONTROL_STORE_BITS);
     
+    for (i = 0; i < 6; i++) {
+        CURRENT_LATCHES.REGS[i] = i;
+    }
+    CURRENT_LATCHES.REGS[6] = 4662;
+    CURRENT_LATCHES.REGS[7] = 43981;
+    
     NEXT_LATCHES = CURRENT_LATCHES;
     
     RUN_BIT = TRUE;
@@ -606,6 +612,7 @@ int main(int argc, char *argv[]) {
     
     /* Error Checking */
 
+    /*
     if (argc < 3) {
         printf("Error: usage: %s <micro_code_file> <program_file_1> <program_file_2> ...\n",
                argv[0]);
@@ -616,12 +623,13 @@ int main(int argc, char *argv[]) {
     printf("LC-3b Simulator\n\n");
     
     initialize(argv[1], argv[2], argc - 2);
-  
-    /*
-    char* arg1 = "ucode3";
-    char* arg2 = "test.hex";
-    initialize(arg1, arg2, 1);
     */
+    
+    
+    char* arg1 = "ucode3";
+    char* arg2 = "tests/testA/5.hex";
+    initialize(arg1, arg2, 1);
+    
     if ( (dumpsim_file = fopen( "dumpsim", "w" )) == NULL ) {
         printf("Error: Can't open dumpsim file\n");
         exit(-1);
@@ -850,8 +858,7 @@ void eval_bus_drivers() {
      *    Gate_MARMUX    *
      *                   *
      *********************/
-    sr1_out = GetSR1MUX() ? CURRENT_LATCHES.REGS[bits8_6(CURRENT_LATCHES.IR) >> 6] :
-                            CURRENT_LATCHES.REGS[bits11_9(CURRENT_LATCHES.IR) >> 9];
+    sr1_out = GetSR1MUX() ? CURRENT_LATCHES.REGS[bits8_6(CURRENT_LATCHES.IR)] : CURRENT_LATCHES.REGS[bits11_9(CURRENT_LATCHES.IR)];
     addr1_out = GetADDR1MUX() ? sr1_out : CURRENT_LATCHES.PC;
     switch(GetADDR2MUX()) {
         case 0:
