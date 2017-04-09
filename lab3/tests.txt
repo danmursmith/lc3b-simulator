@@ -1,0 +1,97 @@
+=========================================================================
+Part A: Tests for individual states (1.25 points each)
+Each of these compares the result of rdump & mdump after run <n>
+where n is the value in column 3 below
+=========================================================================
+Name of     Instruction      Number of   Number of   Incorrect   Points
+Test Case                    Cycles      Differences
+=========================================================================
+initial                      0           x              x  (Not a test case)
+1           ADD R1,R2,R3     1           x              x        0
+2           ADD R1,R2,R3     6           x              x        0
+3           ADD R1,R2,R3     7           x              x        0
+4           ADD R1,R2,R3     8           x              x        0
+5           ADD R1,R2,R3     9           x              x        0
+6imm        ADD R1, R2, x5   9           x              x        0
+6ccn        ADD R1, R1, x-5  9           x              x        0
+6ccz        ADD R1, R1, x-1  9           x              x        0
+7reg        AND R0, R5, R6   9           x              x        0
+7imm        AND R3, R2, xA   9           x              x        0
+8reg        XOR R1, R2, R3   9           x              x        0
+8imm        XOR R1, R2, xa   9           x              x        0
+8ccn        NOT R1, R1       9           x              x        0
+8ccp        NOT R7, R7       9           x              x        0
+9           TRAP x25         9           x              x        0
+10          TRAP x25         14          x              x        0
+11          TRAP x25         15          x              x        0
+12          STW R7, R6, #0   9           x              x        0
+13          STW R7, R6, #0   10          x              x        0
+14          STW R7, R6, #0   15          x              x        0
+15          STB R7, R6, #0   9           x              x        0
+16          STB R7, R6, #0   10          x              x        0
+17          STB R7, R6, #0   15          x              x        0
+18          STB R7, R6, #1   9           x              x        0
+19          STB R7, R6, #1   10          x              x        0
+20          STB R7, R6, #1   15          x              x        0
+21          LDW R0, R6, #0   9           x              x        0
+22          LDW R0, R6, #0   14          x              x        0
+23          LDW R0, R6, #0   15          x              x        0
+24          LDB R0, R6, #0   9           x              x        0
+25          LDB R0, R6, #0   14          x              x        0
+26          LDB R0, R6, #0   15          x              x        0
+27          LDB R0, R6, #1   9           x              x        0
+28          LDB R0, R6, #1   14          x              x        0
+29          LDB R0, R6, #1   15          x              x        0
+30          LEA R2, label    9           x              x        0
+31          JMP R2           9           x              x        0
+32          JMP R2           10          x              x        0
+33          JSRR R2          9           x              x        0
+34          JSRR R2          10          x              x        0
+35          JSRR R2          11          x              x        0
+36          JSR  label       9           x              x        0
+37          JSR  label       10          x              x        0
+38          RET              9           x              x        0
+39          LSHF R2, R3,#4   9           x              x        0
+40          RSHFL R2, R6, #4 9           x              x        0
+41          RSHFA R2, R6, #4 9           x              x        0
+42          BRn label        10          x              x        0
+=========================================================================
+Part B: Tests for correct functionality of instructions(2.5 points each)
+=========================================================================
+Instruction     Number of       Incorrect       Points
+                Differences
+=========================================================================
+add             x                  x            0
+and             x                  x            0
+br              x                  x            0
+jmp             x                  x            0
+jsr             x                  x            0
+jsrr            x                  x            0
+ldb             x                  x            0
+ldw             x                  x            0
+lea             x                  x            0
+lshf            x                  x            0
+rshfa           x                  x            0
+rshfl           x                  x            0
+stb             x                  x            0
+stw             x                  x            0
+trap            x                  x            0
+xor             x                  x            0
+=========================================================================
+Parts A and B - absolute points: 0 / 100
+Parts A and B - adjusted points: 0 / 80
+=========================================================================
+=========================================================================
+Part C: Microcode (-1 point per error)
+=========================================================================
+Error			Control Signal	Your Value	Correct Value
+=========================================================================
+Error: Too few control bits in micro-code file: /home/ecelrc/classaccts/caproj/submit/s17/lab3/good/ncorcoran/ucode3
+Line: 0
+
+=========================================================================
+Part C - points: 0 / 20
+=========================================================================
+=========================================================================
+Assignment 3: Total points 0 / 100
+=========================================================================

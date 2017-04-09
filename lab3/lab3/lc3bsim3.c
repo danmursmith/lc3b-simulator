@@ -371,7 +371,7 @@ void rdump(FILE * dumpsim_file) {
     printf("Cycle Count  : %d\n", Cycle_Count);
     printf("PC           : 0x%.4x\n", CURRENT_LATCHES.PC);
     printf("IR           : 0x%.4x\n", CURRENT_LATCHES.IR);
-    printf("STATE_NUMBER : 0x%.4x\n\n", CURRENT_LATCHES.STATE_NUMBER);
+    printf("STATE_NUMBER : %d\n\n", CURRENT_LATCHES.STATE_NUMBER);
     printf("BUS          : 0x%.4x\n", BUS);
     printf("MDR          : 0x%.4x\n", CURRENT_LATCHES.MDR);
     printf("MAR          : 0x%.4x\n", CURRENT_LATCHES.MAR);
@@ -605,16 +605,23 @@ int main(int argc, char *argv[]) {
     FILE * dumpsim_file;
     
     /* Error Checking */
+
     if (argc < 3) {
         printf("Error: usage: %s <micro_code_file> <program_file_1> <program_file_2> ...\n",
                argv[0]);
         exit(1);
     }
+
     
     printf("LC-3b Simulator\n\n");
     
     initialize(argv[1], argv[2], argc - 2);
-    
+  
+    /*
+    char* arg1 = "ucode3";
+    char* arg2 = "test.hex";
+    initialize(arg1, arg2, 1);
+    */
     if ( (dumpsim_file = fopen( "dumpsim", "w" )) == NULL ) {
         printf("Error: Can't open dumpsim file\n");
         exit(-1);
@@ -706,7 +713,7 @@ int ready, branch, addr_mode,
     mar_out, alu_out, shf_out, mdr_out,
     dr, sr, srVal, shift, immediate, i;
 
-int cycle_count = 0;
+int cycle_count = 1;
 
 int j_state() {
     ready = (!GetCOND1() & GetCOND0() & GetR()) << 1;       /*  */
@@ -720,6 +727,7 @@ int get_opcode() {
 }
 
 void latch_instruction(int state) {
+    NEXT_LATCHES.STATE_NUMBER = state;
     memcpy(NEXT_LATCHES.MICROINSTRUCTION, CONTROL_STORE[state], sizeof(int)*CONTROL_STORE_BITS);
 }
 
@@ -884,12 +892,16 @@ void eval_bus_drivers() {
     switch(GetALUK()) {
         case ADD:
             alu_out = Low16bits(CURRENT_LATCHES.REGS[sr1_out] + sr2_out);
+            break;
         case AND:
             alu_out = Low16bits(CURRENT_LATCHES.REGS[sr1_out] & sr2_out);
+            break;
         case XOR:
             alu_out = Low16bits(CURRENT_LATCHES.REGS[sr1_out] ^ sr2_out);
+            break;
         case PASS:
             alu_out = Low16bits(CURRENT_LATCHES.REGS[sr1_out]);
+            break;
     }
     
     
@@ -949,17 +961,24 @@ void drive_bus() {
      * tristate drivers.
      */
     
-    if (GetGATE_PC())
+    if (GetGATE_PC()) {
         BUS = CURRENT_LATCHES.PC;
-    else if (GetGATE_MDR())
+    }
+    else if (GetGATE_MDR()) {
         BUS = mdr_out;
-    else if (GetGATE_ALU())
+    }
+    else if (GetGATE_ALU()) {
         BUS = alu_out;
-    else if (GetGATE_MARMUX())
+    }
+    else if (GetGATE_MARMUX()) {
         BUS = mar_out;
-    else if (GetGATE_SHF())
+    }
+    else if (GetGATE_SHF()) {
         BUS = shf_out;
-    
+    }
+    else {
+        BUS = 0;
+    }
 }
 
 
@@ -997,8 +1016,10 @@ void latch_datapath_values() {
         switch (GetPCMUX()) {
             case 0:
                 pc_out = CURRENT_LATCHES.PC + 2;
+                break;
             case 1:
                 pc_out = BUS;
+                break;
             case 2:
                 if(GetLSHF1()) {
                     pc_out = addr1_out + (addr2_out << 1);
@@ -1006,6 +1027,7 @@ void latch_datapath_values() {
                 else {
                     pc_out = addr1_out + addr2_out;
                 }
+                break;
         }
         NEXT_LATCHES.PC = pc_out;
     }

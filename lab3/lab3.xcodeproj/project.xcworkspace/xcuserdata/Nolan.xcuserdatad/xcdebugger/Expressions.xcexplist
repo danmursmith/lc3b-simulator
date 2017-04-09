@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "cycle:lc3bsim3.c">
+      </ContextState>
+      <ContextState
+         contextName = "GetPCMUX:lc3bsim3.c">
+         <PersistentStrings>
+            <PersistentString
+               value = "PCMUX1">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "set_condition_codes:lc3bsim3.c">
+         <PersistentStrings>
+            <PersistentString
+               value = "BUS">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "eval_micro_sequencer:lc3bsim3.c">
+         <PersistentStrings>
+            <PersistentString
+               value = "GetIRD()">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "latch_datapath_values:lc3bsim3.c">
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>
