@@ -913,7 +913,7 @@ void eval_bus_drivers() {
      *                 *
      *******************/
     
-    sr = CURRENT_LATCHES.REGS[sr1_out];
+    sr = sr1_out;
     immediate = bits3_0(CURRENT_LATCHES.IR);
     switch (bits5_4(CURRENT_LATCHES.IR)) {
         case LSHF:
