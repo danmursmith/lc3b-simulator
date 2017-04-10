@@ -130,8 +130,7 @@ typedef struct System_Latches_Struct{
         N,          /* n condition bit */
         Z,          /* z condition bit */
         P,          /* p condition bit */
-        BEN,        /* ben register */
-        IE;         /* interrupte enable bit */
+    BEN;        /* ben register */
     
     int READY;	/* ready bit */
     /* The ready bit is also latched as you dont want the memory system to assert it
@@ -432,7 +431,7 @@ void rdump(FILE * dumpsim_file) {
     printf("Cycle Count  : %d\n", CYCLE_COUNT);
     printf("PC           : 0x%0.4x\n", CURRENT_LATCHES.PC);
     printf("IR           : 0x%0.4x\n", CURRENT_LATCHES.IR);
-    printf("STATE_NUMBER : 0x%0.4x\n\n", CURRENT_LATCHES.STATE_NUMBER);
+    printf("STATE_NUMBER : %d\n\n", CURRENT_LATCHES.STATE_NUMBER);
     printf("BUS          : 0x%0.4x\n", BUS);
     printf("MDR          : 0x%0.4x\n", CURRENT_LATCHES.MDR);
     printf("MAR          : 0x%0.4x\n", CURRENT_LATCHES.MAR);
@@ -673,6 +672,7 @@ int main(int argc, char *argv[]) {
     FILE * dumpsim_file;
     
     /* Error Checking */
+    
     if (argc < 3) {
         printf("Error: usage: %s <micro_code_file> <program_file_1> <program_file_2> ...\n",
                argv[0]);
@@ -681,12 +681,24 @@ int main(int argc, char *argv[]) {
     
     printf("LC-3b Simulator\n\n");
     
+    
     initialize(argv[1], argv[2], argc - 2);
+    
+    
+    /*
+    char* arg1 = "ucode4";
+    char* arg2[] = {
+        "add.hex", "data.hex", "vector_table.hex", "int.hex",
+        "except_protect.hex", "except_unaligned.hex", "except_unknown.hex"
+    };
+    initialize(arg1, arg2, 7);
+    */
     
     if ( (dumpsim_file = fopen( "dumpsim", "w" )) == NULL ) {
         printf("Error: Can't open dumpsim file\n");
         exit(-1);
     }
+    
     
     while (1)
         get_command(dumpsim_file);
@@ -836,6 +848,7 @@ void eval_micro_sequencer() {
      * Evaluate the address of the next state according to the
      * micro sequencer logic. Latch the next microinstruction.
      */
+    
     if (CURRENT_LATCHES.EXC) {  /* if EXC bit set, next state is 49 */
         NEXT_LATCHES.STATE_NUMBER = 49;
     }
@@ -866,9 +879,8 @@ void cycle_memory() {
      * If fourth, we need to latch Ready bit at the end of
      * cycle to prepare microsequencer for the fifth cycle.
      */
-    
+    unaligned_exc = 0;
     if (GetMIO_EN()) {
-        unaligned_exc = 0;
         if (CURRENT_LATCHES.READY) {            /* ready to read or write */
             if (GetR_W()) {
                 if (CURRENT_LATCHES.MAR & 1) {  /* unaligned write */
@@ -892,7 +904,6 @@ void cycle_memory() {
                 if (CURRENT_LATCHES.MAR & 1) {  /* unaligned read */
                     if (GetDATA_SIZE()) {       /* word */
                         unaligned_exc = 1;      /* unaligned word access */
-                        exit(0);
                     } else {                    /* high byte */
                         mdr_data = Low16bits((MEMORY[CURRENT_LATCHES.MAR >> 1][1] & 0x00FF) << 8);
                     }
@@ -942,7 +953,12 @@ void eval_bus_drivers() {
      *    Gate_MARMUX    *
      *                   *
      *********************/
-    sr1_out = GetSR1MUX() ? CURRENT_LATCHES.REGS[bits8_6(CURRENT_LATCHES.IR)] : CURRENT_LATCHES.REGS[bits11_9(CURRENT_LATCHES.IR)];
+    if (GetLD_R6()) {
+        sr1_out = CURRENT_LATCHES.REGS[6];
+    }
+    else {
+        sr1_out = GetSR1MUX() ? CURRENT_LATCHES.REGS[bits8_6(CURRENT_LATCHES.IR)] : CURRENT_LATCHES.REGS[bits11_9(CURRENT_LATCHES.IR)];
+    }
     addr1_out = GetADDR1MUX() ? sr1_out : CURRENT_LATCHES.PC;
     switch(GetADDR2MUX()) {
         case 0:
@@ -974,9 +990,6 @@ void eval_bus_drivers() {
      *                 *
      *******************/
     
-    if (GetLD_R6()) {
-        sr1_out = CURRENT_LATCHES.REGS[6];
-    }
     sr2_out = bit5(CURRENT_LATCHES.IR) ? Low16bits(SEXT_5(bits4_0(CURRENT_LATCHES.IR))) : CURRENT_LATCHES.REGS[bits2_0(CURRENT_LATCHES.IR)];
     
     switch(GetALUK()) {
@@ -1207,6 +1220,9 @@ void latch_datapath_values() {
         }
     }
     
+    if (CURRENT_LATCHES.STATE_NUMBER == 47) {
+        printf("Cycle#: %d\n", CYCLE_COUNT);
+    }
 
     if (GetINT_RMUX()) {
         NEXT_LATCHES.INT = 0;
