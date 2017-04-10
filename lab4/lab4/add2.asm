@@ -20,16 +20,21 @@ NEXT			LDB 	R3, R2, #0		; DATA[0:7]
 				ADD 	R1, R1, #-1		; counter -= 1
 				BRp		NEXT
 
-;UNKNOWN		.FILL	x000A
-
-				LEA		R2, SUM			
+				LEA		R2, SUM			; correct address
 				STW		R0, R2, #0
 
-				HALT
+				LEA		R2, PROTECTION	; protection exception
+				STW		R0, R2, #0
+
+				LEA		R2, UNALIGNED	; unaligned exception
+				STW		R0, R2, #0
+
+				TRAP x25
 
 INIT			.FILL	x4000
 DATA			.FILL	xC000
-;SUM				.FILL	xC014
-;SUM		.FILL	x0000				; protection exception
-SUM				.FILL	xC017	; unaligned exception
+SUM				.FILL	xC014
+PROTECTION		.FILL	x0000	
+UNALIGNED		.FILL	xC017
+UNKNOWN			.FILL	x0005
 				.END
