@@ -22,7 +22,7 @@ NEXT			LDB 	R3, R2, #0		; DATA[0:7]
 
 ;UNKNOWN		.FILL	x000A
 
-				LEA		R2, SUM			; protection exception
+				LEA		R2, SUM			
 				STW		R0, R2, #0
 
 				HALT
@@ -30,6 +30,6 @@ NEXT			LDB 	R3, R2, #0		; DATA[0:7]
 INIT			.FILL	x4000
 DATA			.FILL	xC000
 ;SUM				.FILL	xC014
-SUM				.FILL	x0000	
-;SUM				.FILL	xC017
+;SUM		.FILL	x0000				; protection exception
+SUM				.FILL	xC017	; unaligned exception
 				.END

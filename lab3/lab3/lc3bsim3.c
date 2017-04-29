@@ -171,7 +171,7 @@ int GetJ() {
            (CURRENT_LATCHES.MICROINSTRUCTION[J3] << 3) +
            (CURRENT_LATCHES.MICROINSTRUCTION[J2] << 2) +
            (CURRENT_LATCHES.MICROINSTRUCTION[J1] << 1) +
-           CURRENT_LATCHES.MICROINSTRUCTION[J0]);
+           (CURRENT_LATCHES.MICROINSTRUCTION[J0]));
 }
 int GetMIO_EN() {
     return(CURRENT_LATCHES.MICROINSTRUCTION[MIO_EN]);
@@ -189,8 +189,7 @@ int GetADDR1MUX() {
     return(CURRENT_LATCHES.MICROINSTRUCTION[ADDR1MUX]);
 }
 int GetADDR2MUX() {
-    return((CURRENT_LATCHES.MICROINSTRUCTION[ADDR2MUX1] << 1) +
-           CURRENT_LATCHES.MICROINSTRUCTION[ADDR2MUX0]);
+    return((CURRENT_LATCHES.MICROINSTRUCTION[ADDR2MUX1] << 1) + CURRENT_LATCHES.MICROINSTRUCTION[ADDR2MUX0]);
 }
 int GetLSHF1() {
     return(CURRENT_LATCHES.MICROINSTRUCTION[LSHF1]);
@@ -232,8 +231,7 @@ int GetGATE_SHF() {
     return(CURRENT_LATCHES.MICROINSTRUCTION[GATE_SHF]);
 }
 int GetPCMUX() {
-    return((CURRENT_LATCHES.MICROINSTRUCTION[PCMUX1] << 1) +
-           CURRENT_LATCHES.MICROINSTRUCTION[PCMUX0]);
+    return((CURRENT_LATCHES.MICROINSTRUCTION[PCMUX1] << 1) + CURRENT_LATCHES.MICROINSTRUCTION[PCMUX0]);
 }
 int GetDRMUX() {
     return(CURRENT_LATCHES.MICROINSTRUCTION[DRMUX]);
@@ -242,8 +240,7 @@ int GetMARMUX() {
     return(CURRENT_LATCHES.MICROINSTRUCTION[MARMUX]);
 }
 int GetALUK() {
-    return((CURRENT_LATCHES.MICROINSTRUCTION[ALUK1] << 1) +
-           CURRENT_LATCHES.MICROINSTRUCTION[ALUK0]);
+    return((CURRENT_LATCHES.MICROINSTRUCTION[ALUK1] << 1) + CURRENT_LATCHES.MICROINSTRUCTION[ALUK0]);
 }
 
 /***************************************************************/
@@ -606,7 +603,7 @@ int main(int argc, char *argv[]) {
     
     /* Error Checking */
 
-
+/*
     if (argc < 3) {
         printf("Error: usage: %s <micro_code_file> <program_file_1> <program_file_2> ...\n",
                argv[0]);
@@ -617,12 +614,12 @@ int main(int argc, char *argv[]) {
     printf("LC-3b Simulator\n\n");
     
     initialize(argv[1], argv[2], argc - 2);
-    
-    /*
+*/
+
     char* arg1 = "ucode3";
-    char* arg2 = "tests/testA/5.hex";
+    char* arg2 = "add3.hex";
     initialize(arg1, arg2, 1);
-     */
+
     
     if ( (dumpsim_file = fopen( "dumpsim", "w" )) == NULL ) {
         printf("Error: Can't open dumpsim file\n");
@@ -733,7 +730,7 @@ void latch_instruction(int state) {
     memcpy(NEXT_LATCHES.MICROINSTRUCTION, CONTROL_STORE[state], sizeof(int)*CONTROL_STORE_BITS);
 }
 
-void set_condition_codes() {
+void set_CC() {
     if (Low16bits(BUS)) {               /* either positive or negative */
         if ((BUS & 0x8000) >> 15) {     /* MSB */
             NEXT_LATCHES.N = 1;
@@ -751,7 +748,7 @@ void set_condition_codes() {
     }
 }
 
-void set_branch_enable() {
+void set_BEN() {
     NEXT_LATCHES.BEN = (CURRENT_LATCHES.N & bit11(CURRENT_LATCHES.IR) >> 11)  |
                        (CURRENT_LATCHES.Z & bit10(CURRENT_LATCHES.IR) >> 10) |
                        (CURRENT_LATCHES.P & bit9(CURRENT_LATCHES.IR) >> 9);
@@ -763,9 +760,17 @@ void eval_micro_sequencer() {
      * Evaluate the address of the next state according to the
      * micro sequencer logic. Latch the next microinstruction.
      */
+
+    if (CURRENT_LATCHES.STATE_NUMBER == 2) {
+        printf("At LDB instruction\n");
+    }
+    
+    if (CURRENT_LATCHES.STATE_NUMBER == 1) {
+        printf("At ADD instruction\n");
+    }
     
     /* Check IRD bit to determine whether to use the opcode or J bits */
-    if (GetIRD() == 0) {    /* use J bits */
+    if (!GetIRD()) {        /* use J bits */
         next_state = j_state();
     }
     else {                  /* use opcode bits */
@@ -1032,10 +1037,10 @@ void latch_datapath_values() {
         NEXT_LATCHES.PC = pc_out;
     }
     if (GetLD_CC()) {
-        set_condition_codes();
+        set_CC();
     }
     if (GetLD_BEN()) {
-        set_branch_enable();
+        set_BEN();
     }
     
 }
