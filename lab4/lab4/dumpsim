@@ -1,107 +1,210 @@
 
-Memory content [0x4000..0x4001] :
--------------------------------------
- 0x4000 (16384) : 0x0001
-
-
 Current register/bus values :
 -------------------------------------
-Cycle Count  : 299
-PC           : 0x301c
-IR           : 0x1b7f
-STATE_NUMBER : 0x0021
-
-BUS          : 0x0000
-MDR          : 0x1b7f
-MAR          : 0x301a
+Cycle Count      : 302
+PC               : 0x3022
+IR               : 0x2680
+STATE_NUMBER     : 33
+BUS              : 0x0000
+MDR              : 0x2339
+MAR              : 0x3020
 CCs: N = 0  Z = 0  P = 1
+BEN              : 0x0001
+INTV             : 0x0001
+EXCV             : 0x0000
+PSR              : 0x8001
+SSP              : 0x3000
+USP              : 0xfe00
+INT              : 0x0001
+EXC              : 0x0000
+MICROINSTRUCTION : 001100001010000000000000000000010100000000000000000
 Registers:
-0: 0x0000
-1: 0x0001
+0: 0x0009
+1: 0x005c
 2: 0xc003
-3: 0x0039
-4: 0x0071
-5: 0x0011
-6: 0x0000
-7: 0x0000
-
-
-Memory content [0x4000..0x4001] :
--------------------------------------
- 0x4000 (16384) : 0x0001
-
-
-Current register/bus values :
--------------------------------------
-Cycle Count  : 329
-PC           : 0x1200
-IR           : 0x0ffa
-STATE_NUMBER : 0x0012
-
-BUS          : 0x1200
-MDR          : 0x1200
-MAR          : 0x0202
-CCs: N = 0  Z = 0  P = 1
-Registers:
-0: 0x0000
-1: 0x0001
-2: 0xc003
-3: 0x0039
-4: 0x0071
-5: 0x0011
-6: 0x2ffc
-7: 0x0000
-
-
-Memory content [0x4000..0x4001] :
--------------------------------------
- 0x4000 (16384) : 0x0002
-
-
-Current register/bus values :
--------------------------------------
-Cycle Count  : 1786
-PC           : 0x0000
-IR           : 0x4000
-STATE_NUMBER : 0x0012
-
-BUS          : 0x3026
-MDR          : 0x4000
-MAR          : 0x3024
-CCs: N = 0  Z = 1  P = 0
-Registers:
-0: 0x0000
-1: 0x0001
-2: 0x0000
-3: 0x0026
-4: 0x01f9
+3: 0x0023
+4: 0x0000
 5: 0x0000
-6: 0x0000
-7: 0x3026
-
-Memory content [0x4000..0x4001] :
--------------------------------------
- 0x4000 (16384) : 0x0002
+6: 0xfe00
+7: 0x0000
 
 
 Current register/bus values :
 -------------------------------------
-Cycle Count  : 1785
-PC           : 0x0000
-IR           : 0x4000
-STATE_NUMBER : 0x0012
+Cycle Count      : 303
+PC               : 0x3022
+IR               : 0x2680
+STATE_NUMBER     : 35
+BUS              : 0x0000
+MDR              : 0x14a1
+MAR              : 0x3020
+CCs: N = 0  Z = 0  P = 1
+BEN              : 0x0001
+INTV             : 0x0001
+EXCV             : 0x0000
+PSR              : 0x8001
+SSP              : 0x3000
+USP              : 0xfe00
+INT              : 0x0001
+EXC              : 0x0000
+MICROINSTRUCTION : 000100000001000001000000000000000100000000000000000
+Registers:
+0: 0x0009
+1: 0x005c
+2: 0xc003
+3: 0x0023
+4: 0x0000
+5: 0x0000
+6: 0xfe00
+7: 0x0000
 
-BUS          : 0x3026
-MDR          : 0x4000
-MAR          : 0x3024
+
+Current register/bus values :
+-------------------------------------
+Cycle Count      : 304
+PC               : 0x3022
+IR               : 0x14a1
+STATE_NUMBER     : 32
+BUS              : 0x14a1
+MDR              : 0x14a1
+MAR              : 0x3020
+CCs: N = 0  Z = 0  P = 1
+BEN              : 0x0001
+INTV             : 0x0001
+EXCV             : 0x0000
+PSR              : 0x8001
+SSP              : 0x3000
+USP              : 0xfe00
+INT              : 0x0001
+EXC              : 0x0000
+MICROINSTRUCTION : 100000000000100000000000000000000000010000000000000
+Registers:
+0: 0x0009
+1: 0x005c
+2: 0xc003
+3: 0x0023
+4: 0x0000
+5: 0x0000
+6: 0xfe00
+7: 0x0000
+
+
+Current register/bus values :
+-------------------------------------
+Cycle Count      : 305
+PC               : 0x3022
+IR               : 0x14a1
+STATE_NUMBER     : 1
+BUS              : 0x0000
+MDR              : 0x14a1
+MAR              : 0x3020
+CCs: N = 0  Z = 0  P = 1
+BEN              : 0x0000
+INTV             : 0x0001
+EXCV             : 0x0000
+PSR              : 0x8001
+SSP              : 0x3000
+USP              : 0xfe00
+INT              : 0x0001
+EXC              : 0x0000
+MICROINSTRUCTION : 000010010000011000100000100000000000000010010000000
+Registers:
+0: 0x0009
+1: 0x005c
+2: 0xc003
+3: 0x0023
+4: 0x0000
+5: 0x0000
+6: 0xfe00
+7: 0x0000
+
+
+Current register/bus values :
+-------------------------------------
+Cycle Count      : 306
+PC               : 0x3022
+IR               : 0x14a1
+STATE_NUMBER     : 18
+BUS              : 0xc004
+MDR              : 0x14a1
+MAR              : 0x3020
 CCs: N = 1  Z = 0  P = 0
+BEN              : 0x0000
+INTV             : 0x0001
+EXCV             : 0x0000
+PSR              : 0x8004
+SSP              : 0x3000
+USP              : 0xfe00
+INT              : 0x0001
+EXC              : 0x0000
+MICROINSTRUCTION : 000110101100000110000000000000000000010000000000000
 Registers:
-0: 0x0000
-1: 0x0001
-2: 0xc017
-3: 0x0026
-4: 0x01f9
+0: 0x0009
+1: 0x005c
+2: 0xc004
+3: 0x0023
+4: 0x0000
 5: 0x0000
-6: 0x0000
-7: 0x3026
+6: 0xfe00
+7: 0x0000
+
+
+Current register/bus values :
+-------------------------------------
+Cycle Count      : 307
+PC               : 0x3024
+IR               : 0x14a1
+STATE_NUMBER     : 53
+BUS              : 0x3022
+MDR              : 0x14a1
+MAR              : 0x3022
+CCs: N = 1  Z = 0  P = 0
+BEN              : 0x0000
+INTV             : 0x0001
+EXCV             : 0x0000
+PSR              : 0x8004
+SSP              : 0x3000
+USP              : 0xfe00
+INT              : 0x0001
+EXC              : 0x0000
+MICROINSTRUCTION : 000100001000000000000000000000000001000000000000001
+Registers:
+0: 0x0009
+1: 0x005c
+2: 0xc004
+3: 0x0023
+4: 0x0000
+5: 0x0000
+6: 0xfe00
+7: 0x0000
+
+
+Current register/bus values :
+-------------------------------------
+Cycle Count      : 308
+PC               : 0x3024
+IR               : 0x14a1
+STATE_NUMBER     : 49
+BUS              : 0x0000
+MDR              : 0x14a1
+MAR              : 0x3022
+CCs: N = 1  Z = 0  P = 0
+BEN              : 0x0000
+INTV             : 0x0001
+EXCV             : 0x0000
+PSR              : 0x8004
+SSP              : 0x3000
+USP              : 0xfe00
+INT              : 0x0001
+EXC              : 0x0000
+MICROINSTRUCTION : 000100010000010000100000000001100000100100000001000
+Registers:
+0: 0x0009
+1: 0x005c
+2: 0xc004
+3: 0x0023
+4: 0x0000
+5: 0x0000
+6: 0xfe00
+7: 0x0000
 

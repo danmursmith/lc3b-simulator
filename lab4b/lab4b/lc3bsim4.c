@@ -779,7 +779,6 @@ int main(int argc, char *argv[]) {
 #define bit9(x) (x & 0x0200)
 #define bit10(x) (x & 0x0400)
 #define bit11(x) (x & 0x0800)
-#define bit15(x) (x & 0x8000)
 #define bits5_4(x) ((x & 0x0030) >> 4)
 #define bits8_6(x) ((x & 0x01C0) >> 6)
 #define bits11_9(x) ((x & 0x0E00) >> 9)
@@ -930,7 +929,6 @@ void cycle_memory() {
     if (CYCLE_COUNT == 300) {               /* interrupt */
         NEXT_LATCHES.INT = 1;
         NEXT_LATCHES.INTV = 0x01;
-        printf("Interrupt triggered - State: %d\n", CURRENT_LATCHES.STATE_NUMBER);
         /*NEXT_LATCHES.IE = 0;*/            /* temporarily disabled for all new interrupts */
     }
     
@@ -944,10 +942,10 @@ void eval_bus_drivers() {
      * Datapath routine emulating operations before driving the bus.
      * Evaluate the input of tristate drivers
      *       Gate_MARMUX,
-     *       Gate_PC,
-     *       Gate_ALU,
-     *       Gate_SHF,
-     *       Gate_MDR,
+     *		 Gate_PC,
+     *		 Gate_ALU,
+     *		 Gate_SHF,
+     *		 Gate_MDR,
      *       Gate_PSR,
      *       Gate_VECTOR
      */
@@ -1077,10 +1075,10 @@ void drive_bus() {
      * Datapath routine for driving the bus from one of the 7 possible
      * tristate drivers.
      *       Gate_MARMUX,
-     *       Gate_PC,
-     *       Gate_ALU,
-     *       Gate_SHF,
-     *       Gate_MDR,
+     *		 Gate_PC,
+     *		 Gate_ALU,
+     *		 Gate_SHF,
+     *		 Gate_MDR,
      *       Gate_PSR,
      *       Gate_VECTOR
      */
@@ -1124,21 +1122,19 @@ void latch_datapath_values() {
     if (GetLD_MAR()) {
         NEXT_LATCHES.MAR = Low16bits(BUS);
         if (GetLD_EXC()) {
-            if ((bit15(CURRENT_LATCHES.PSR) >> 15) && (BUS < 0x3000)) {                /* protection exception */
-                printf("Protection exception - State: %d\n", CURRENT_LATCHES.STATE_NUMBER);
+            if (NEXT_LATCHES.MAR < 0x3000) {                /* protection exception */
                 NEXT_LATCHES.EXC = 1;
                 NEXT_LATCHES.EXCV = 0x02;
+                NEXT_LATCHES.PC -= 2;
             }
             else if ( (CURRENT_LATCHES.STATE_NUMBER != 2) && (CURRENT_LATCHES.STATE_NUMBER != 3) ) {   /* not LDB or STB */
                 if (BUS & 1) {                              /* unaligned access exception */
-                    printf("Unaligned access exception - State: %d\n", CURRENT_LATCHES.STATE_NUMBER);
                     NEXT_LATCHES.EXC = 1;
                     NEXT_LATCHES.EXCV = 0x03;
                 }
             }
         }
     }
-    
     if (GetLD_MDR()) {
         if (GetMIO_EN()) {
             if (CURRENT_LATCHES.READY) {
@@ -1224,7 +1220,6 @@ void latch_datapath_values() {
     if (GetLD_BEN()) {
         set_BEN();
         if (GetLD_EXC() && unknown_exc) {   /* unknown opcode exception */
-            printf("Unknown opcode exception - State: %d\n", CURRENT_LATCHES.STATE_NUMBER);
             NEXT_LATCHES.EXC = 1;
             NEXT_LATCHES.EXCV = 0x04;
             
@@ -1245,22 +1240,18 @@ void latch_datapath_values() {
                 NEXT_LATCHES.PSR = Low16bits(BUS);
                 break;
             case 1:
-                NEXT_LATCHES.PSR = Low16bits(CURRENT_LATCHES.PSR & 0x7FFF);  /* set to privilege to SV mode */
+                NEXT_LATCHES.PSR = Low16bits(CURRENT_LATCHES.PSR & 0x7FFF);  /* set to privilege to user mode */
                 break;
             case 2:
                 NEXT_LATCHES.PSR = (CURRENT_LATCHES.PSR & 0xFFF8) + (NEXT_LATCHES.N << 2) + (NEXT_LATCHES.Z << 1) + (NEXT_LATCHES.P);
                 break;
         }
     }
-
-    if (NEXT_LATCHES.STATE_NUMBER == 49) {
-        printf("Entering service routine ... \n");
-    }
-
-    if (CURRENT_LATCHES.STATE_NUMBER == 50) {
-        printf("Leaving service routine ... \n");
-    }
     
+    if (CURRENT_LATCHES.STATE_NUMBER == 47) {
+        printf("Cycle#: %d\n", CYCLE_COUNT);
+    }
+
     if (GetINT_RMUX()) {
         NEXT_LATCHES.INT = 0;
     }

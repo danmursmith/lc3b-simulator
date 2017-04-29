@@ -1,0 +1,30 @@
+
+Current register/bus values :
+-------------------------------------
+Cycle Count      : 300
+PC               : 0x3022
+IR               : 0x2680
+STATE_NUMBER     : 33
+BUS              : 0x0000
+MDR              : 0x2339
+MAR              : 0x3020
+CCs: N = 0  Z = 0  P = 1
+BEN              : 0x0001
+INTV             : 0x0000
+EXCV             : 0x0000
+PSR              : 0x8001
+SSP              : 0x3000
+USP              : 0xfe00
+INT              : 0x0000
+EXC              : 0x0000
+MICROINSTRUCTION : 001100001010000000000000000000010100000000000000000
+Registers:
+0: 0x0009
+1: 0x005c
+2: 0xc003
+3: 0x0023
+4: 0x0000
+5: 0x0000
+6: 0xfe00
+7: 0x0000
+

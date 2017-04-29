@@ -3,34 +3,12 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "cycle:lc3bsim3.c">
-      </ContextState>
-      <ContextState
-         contextName = "GetPCMUX:lc3bsim3.c">
+         contextName = "eval_bus_drivers:lc3bsim3.c">
          <PersistentStrings>
             <PersistentString
-               value = "PCMUX1">
+               value = "bits8_6(CURRENT_LATCHES.IR) &gt;&gt; 6">
             </PersistentString>
          </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "set_condition_codes:lc3bsim3.c">
-         <PersistentStrings>
-            <PersistentString
-               value = "BUS">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "eval_micro_sequencer:lc3bsim3.c">
-         <PersistentStrings>
-            <PersistentString
-               value = "GetIRD()">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "latch_datapath_values:lc3bsim3.c">
       </ContextState>
    </ContextStates>
 </VariablesViewState>
