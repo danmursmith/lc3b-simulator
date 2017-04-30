@@ -463,32 +463,14 @@ void rdump(FILE * dumpsim_file) {
     /* dump the state information into the dumpsim file */
     fprintf(dumpsim_file, "\nCurrent register/bus values :\n");
     fprintf(dumpsim_file, "-------------------------------------\n");
-    fprintf(dumpsim_file, "Cycle Count      : %d\n", CYCLE_COUNT);
-    fprintf(dumpsim_file, "PC               : 0x%0.4x\n", CURRENT_LATCHES.PC);
-    fprintf(dumpsim_file, "IR               : 0x%0.4x\n", CURRENT_LATCHES.IR);
-    fprintf(dumpsim_file, "STATE_NUMBER     : %d\n", CURRENT_LATCHES.STATE_NUMBER);
-    fprintf(dumpsim_file, "BUS              : 0x%0.4x\n", BUS);
-    fprintf(dumpsim_file, "MDR              : 0x%0.4x\n", CURRENT_LATCHES.MDR);
-    fprintf(dumpsim_file, "MAR              : 0x%0.4x\n", CURRENT_LATCHES.MAR);
+    fprintf(dumpsim_file, "Cycle Count  : %d\n", CYCLE_COUNT);
+    fprintf(dumpsim_file, "PC           : 0x%0.4x\n", CURRENT_LATCHES.PC);
+    fprintf(dumpsim_file, "IR           : 0x%0.4x\n", CURRENT_LATCHES.IR);
+    fprintf(dumpsim_file, "STATE_NUMBER : 0x%0.4x\n\n", CURRENT_LATCHES.STATE_NUMBER);
+    fprintf(dumpsim_file, "BUS          : 0x%0.4x\n", BUS);
+    fprintf(dumpsim_file, "MDR          : 0x%0.4x\n", CURRENT_LATCHES.MDR);
+    fprintf(dumpsim_file, "MAR          : 0x%0.4x\n", CURRENT_LATCHES.MAR);
     fprintf(dumpsim_file, "CCs: N = %d  Z = %d  P = %d\n", CURRENT_LATCHES.N, CURRENT_LATCHES.Z, CURRENT_LATCHES.P);
-    
-    fprintf(dumpsim_file, "BEN              : 0x%0.4x\n", CURRENT_LATCHES.BEN);
-    fprintf(dumpsim_file, "INTV             : 0x%0.4x\n", CURRENT_LATCHES.INTV);
-    fprintf(dumpsim_file, "EXCV             : 0x%0.4x\n", CURRENT_LATCHES.EXCV);
-    fprintf(dumpsim_file, "PSR              : 0x%0.4x\n", CURRENT_LATCHES.PSR);
-    
-    fprintf(dumpsim_file, "SSP              : 0x%0.4x\n", CURRENT_LATCHES.SSP);
-    fprintf(dumpsim_file, "USP              : 0x%0.4x\n", CURRENT_LATCHES.USP);
-    
-    fprintf(dumpsim_file, "INT              : 0x%0.4x\n", CURRENT_LATCHES.INT);
-    fprintf(dumpsim_file, "EXC              : 0x%0.4x\n", CURRENT_LATCHES.EXC);
-    
-    fprintf(dumpsim_file, "MICROINSTRUCTION : ");
-    for (t = 0; t < 51; t++) {
-        fprintf(dumpsim_file, "%d", CURRENT_LATCHES.MICROINSTRUCTION[t]);
-    }
-    fprintf(dumpsim_file, "\n");
-    
     fprintf(dumpsim_file, "Registers:\n");
     for (k = 0; k < LC_3b_REGS; k++)
         fprintf(dumpsim_file, "%d: 0x%0.4x\n", k, CURRENT_LATCHES.REGS[k]);
@@ -709,23 +691,23 @@ int main(int argc, char *argv[]) {
     FILE * dumpsim_file;
     
     /* Error Checking */
-    
-     if (argc < 3) {
-     printf("Error: usage: %s <micro_code_file> <program_file_1> <program_file_2> ...\n",
-     argv[0]);
-     exit(1);
-     }
-     printf("LC-3b Simulator\n\n");
+ /*
+    if (argc < 3) {
+        printf("Error: usage: %s <micro_code_file> <program_file_1> <program_file_2> ...\n",
+        argv[0]);
+        exit(1);
+    }
+    printf("LC-3b Simulator\n\n");
   
-     initialize(argv[1], argv[2], argc - 2);
+    initialize(argv[1], argv[2], argc - 2);
+*/
     
-    /*
     char* arg2[] = {
         "ucode4", "add.hex", "data.hex", "vector_table.hex", "int.hex",
         "except_prot.hex", "except_unaligned.hex", "except_unknown.hex"
     };
     initialize(arg2[0], arg2[1], 7);
-    */
+    
     
     if ( (dumpsim_file = fopen( "dumpsim", "w" )) == NULL ) {
         printf("Error: Can't open dumpsim file\n");
@@ -921,7 +903,7 @@ void eval_micro_sequencer() {
     else {                  /* use opcode bits */
         next_state = get_opcode();
         unknown_exc = (next_state == 10 || next_state == 11) ? 1 : 0;
-        
+      /*
         if (!unknown_exc && ((CYCLE_COUNT > 154 && CYCLE_COUNT < 340) || CYCLE_COUNT > 490)) {
             
             switch (next_state) {
@@ -990,7 +972,7 @@ void eval_micro_sequencer() {
             printf("R2: 0x%x (MEMORY ADDRESS)\n", CURRENT_LATCHES.REGS[2]);
             printf("R3: 0x%x (MEM[R2])\n", CURRENT_LATCHES.REGS[3]);
             printf("\n");
-        }
+        }*/
     }
     latch_instruction(next_state);
 }
@@ -1366,13 +1348,13 @@ void latch_datapath_values() {
     
     if (NEXT_LATCHES.STATE_NUMBER == 49) {
         printf("Entering service routine ... \n");
-        printf("Cycle Count: %d\n", CYCLE_COUNT);
+/*        printf("Cycle Count: %d\n", CYCLE_COUNT);
         printf("Current PC: 0x%x\n", CURRENT_LATCHES.PC);
         printf("R0: %d (COUNTER)\n", CURRENT_LATCHES.REGS[0]);
         printf("R1: 0x%x (SUM)\n", CURRENT_LATCHES.REGS[1]);
         printf("R2: 0x%x (MEMORY ADDRESS)\n", CURRENT_LATCHES.REGS[2]);
         printf("R3: 0x%x (MEM[R2])\n\n", CURRENT_LATCHES.REGS[3]);
-    }
+*/    }
     
     if (NEXT_LATCHES.STATE_NUMBER == 8) {
         printf("RTI next ... \n");
@@ -1380,6 +1362,7 @@ void latch_datapath_values() {
     
     if (CURRENT_LATCHES.STATE_NUMBER == 50) {
         printf("Leaving service routine ... \n");
+        printf("Cycle Count: %d\n", CYCLE_COUNT);
     }
     
     if (GetINT_RMUX()) {
