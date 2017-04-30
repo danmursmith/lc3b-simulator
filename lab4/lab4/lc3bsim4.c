@@ -691,7 +691,7 @@ int main(int argc, char *argv[]) {
     FILE * dumpsim_file;
     
     /* Error Checking */
- /*
+ 
     if (argc < 3) {
         printf("Error: usage: %s <micro_code_file> <program_file_1> <program_file_2> ...\n",
         argv[0]);
@@ -700,14 +700,14 @@ int main(int argc, char *argv[]) {
     printf("LC-3b Simulator\n\n");
   
     initialize(argv[1], argv[2], argc - 2);
-*/
-    
+
+/*
     char* arg2[] = {
         "ucode4", "add.hex", "data.hex", "vector_table.hex", "int.hex",
         "except_prot.hex", "except_unaligned.hex", "except_unknown.hex"
     };
     initialize(arg2[0], arg2[1], 7);
-    
+*/
     
     if ( (dumpsim_file = fopen( "dumpsim", "w" )) == NULL ) {
         printf("Error: Can't open dumpsim file\n");
