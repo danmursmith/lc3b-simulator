@@ -1439,7 +1439,6 @@ void latch_datapath_values() {
     
     if (GetLD_R()) {    /* R=1, M = MOD[IR[15:10]] */
         NEXT_LATCHES.MDR = Low16bits(CURRENT_LATCHES.MDR | 1);
-       // printf("Updating PTE 0x%x - State %d, Cycle %d\n", CURRENT_LATCHES.MDR, CURRENT_LATCHES.STATE_NUMBER, CYCLE_COUNT);
         if ((get_opcode() == 3 || get_opcode() == 7) && (CURRENT_LATCHES.TEMP != 33)) {
             NEXT_LATCHES.MDR = Low16bits(CURRENT_LATCHES.MDR | 0x03);
         }
@@ -1465,12 +1464,12 @@ void latch_datapath_values() {
          printf("R3: 0x%x (MEM[R2])\n\n", CURRENT_LATCHES.REGS[3]);
          */
     }
-
+/*
     if (CURRENT_LATCHES.STATE_NUMBER == 59) {
-        //printf("Done translating, next state: %d\n", CURRENT_LATCHES.TEMP);
-        //printf("Cycle Count: %d\n", CYCLE_COUNT);
+        printf("Done translating, next state: %d\n", CURRENT_LATCHES.TEMP);
+        printf("Cycle Count: %d\n", CYCLE_COUNT);
     }
-    
+*/    
     if (NEXT_LATCHES.STATE_NUMBER == 8) {
         printf("RTI next ... \n");
     }
