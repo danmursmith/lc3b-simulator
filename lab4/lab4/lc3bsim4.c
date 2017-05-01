@@ -124,13 +124,13 @@ int BUS;	/* value of the bus */
 typedef struct System_Latches_Struct{
     
     int PC,         /* program counter */
-    MDR,        /* memory data register */
-    MAR,        /* memory address register */
-    IR,         /* instruction register */
-    N,          /* n condition bit */
-    Z,          /* z condition bit */
-    P,          /* p condition bit */
-    BEN;        /* ben register */
+        MDR,        /* memory data register */
+        MAR,        /* memory address register */
+        IR,         /* instruction register */
+        N,          /* n condition bit */
+        Z,          /* z condition bit */
+        P,          /* p condition bit */
+        BEN;        /* ben register */
     
     int READY;	/* ready bit */
     /* The ready bit is also latched as you dont want the memory system to assert it
@@ -523,7 +523,7 @@ void get_command(FILE * dumpsim_file) {
                 run(cycles);
             }
             break;
-            
+
         default:
             printf("Invalid Command\n");
             break;
@@ -662,7 +662,7 @@ void initialize(char *ucode_filename, char *program_filename, int num_prog_files
     init_control_store(ucode_filename);
     
     init_memory();
-    for ( i = 0; i < num_prog_files; i++ ) {
+    for (i = 0; i < num_prog_files; i++ ) {
         load_program(program_filename);
         while(*program_filename++ != '\0');
     }

@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		306BAFF81E5AC949002E3A7B /* lc3bsim5.c in Sources */ = {isa = PBXBuildFile; fileRef = 306BAFF71E5AC949002E3A7B /* lc3bsim5.c */; };
+		30DC38641EB6E987004A3F92 /* lc3bsim5.c in Sources */ = {isa = PBXBuildFile; fileRef = 306BAFF71E5AC949002E3A7B /* lc3bsim5.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +25,26 @@
 /* Begin PBXFileReference section */
 		306BAFF41E5AC949002E3A7B /* lab5 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = lab5; sourceTree = BUILT_PRODUCTS_DIR; };
 		306BAFF71E5AC949002E3A7B /* lc3bsim5.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = lc3bsim5.c; sourceTree = "<group>"; };
+		30DC38021EB5EDD0004A3F92 /* add.asm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm.asm; path = add.asm; sourceTree = "<group>"; };
+		30DC38031EB5EDD0004A3F92 /* add.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = add.hex; sourceTree = "<group>"; };
+		30DC38041EB5EDD0004A3F92 /* assembler.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = assembler.c; sourceTree = "<group>"; };
+		30DC38051EB5EDD0004A3F92 /* data.asm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm.asm; path = data.asm; sourceTree = "<group>"; };
+		30DC38061EB5EDD0004A3F92 /* data.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = data.hex; sourceTree = "<group>"; };
+		30DC38071EB5EDD0004A3F92 /* int.asm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm.asm; path = int.asm; sourceTree = "<group>"; };
+		30DC38081EB5EDD0004A3F92 /* int.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = int.hex; sourceTree = "<group>"; };
+		30DC38091EB5EDD0004A3F92 /* pagetable.asm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm.asm; path = pagetable.asm; sourceTree = "<group>"; };
+		30DC380A1EB5EDD0004A3F92 /* vector_table.asm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm.asm; path = vector_table.asm; sourceTree = "<group>"; };
+		30DC38121EB5EFC1004A3F92 /* except_prot.asm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm.asm; path = except_prot.asm; sourceTree = "<group>"; };
+		30DC38131EB5EFC1004A3F92 /* except_prot.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = except_prot.hex; sourceTree = "<group>"; };
+		30DC38141EB5EFC1004A3F92 /* except_unaligned.asm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm.asm; path = except_unaligned.asm; sourceTree = "<group>"; };
+		30DC38151EB5EFC1004A3F92 /* except_unaligned.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = except_unaligned.hex; sourceTree = "<group>"; };
+		30DC38161EB5EFC1004A3F92 /* except_unknown.asm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm.asm; path = except_unknown.asm; sourceTree = "<group>"; };
+		30DC38171EB5EFC1004A3F92 /* except_unknown.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = except_unknown.hex; sourceTree = "<group>"; };
+		30DC381B1EB5F0D2004A3F92 /* pagetable.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = pagetable.hex; sourceTree = "<group>"; };
+		30DC381C1EB5F0D2004A3F92 /* vector_table.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = vector_table.hex; sourceTree = "<group>"; };
+		30DC381E1EB66815004A3F92 /* ucode4 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ucode4; sourceTree = "<group>"; };
+		30DC38531EB6D40A004A3F92 /* ucode5 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ucode5; sourceTree = "<group>"; };
+		30DC38691EB6EBE4004A3F92 /* dumpsim */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dumpsim; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +77,26 @@
 		306BAFF61E5AC949002E3A7B /* lab5 */ = {
 			isa = PBXGroup;
 			children = (
+				30DC38691EB6EBE4004A3F92 /* dumpsim */,
+				30DC38531EB6D40A004A3F92 /* ucode5 */,
+				30DC381E1EB66815004A3F92 /* ucode4 */,
+				30DC381B1EB5F0D2004A3F92 /* pagetable.hex */,
+				30DC381C1EB5F0D2004A3F92 /* vector_table.hex */,
+				30DC38121EB5EFC1004A3F92 /* except_prot.asm */,
+				30DC38131EB5EFC1004A3F92 /* except_prot.hex */,
+				30DC38141EB5EFC1004A3F92 /* except_unaligned.asm */,
+				30DC38151EB5EFC1004A3F92 /* except_unaligned.hex */,
+				30DC38161EB5EFC1004A3F92 /* except_unknown.asm */,
+				30DC38171EB5EFC1004A3F92 /* except_unknown.hex */,
+				30DC38021EB5EDD0004A3F92 /* add.asm */,
+				30DC38031EB5EDD0004A3F92 /* add.hex */,
+				30DC38041EB5EDD0004A3F92 /* assembler.c */,
+				30DC38051EB5EDD0004A3F92 /* data.asm */,
+				30DC38061EB5EDD0004A3F92 /* data.hex */,
+				30DC38071EB5EDD0004A3F92 /* int.asm */,
+				30DC38081EB5EDD0004A3F92 /* int.hex */,
+				30DC38091EB5EDD0004A3F92 /* pagetable.asm */,
+				30DC380A1EB5EDD0004A3F92 /* vector_table.asm */,
 				306BAFF71E5AC949002E3A7B /* lc3bsim5.c */,
 			);
 			path = lab5;
@@ -119,7 +159,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				306BAFF81E5AC949002E3A7B /* lc3bsim5.c in Sources */,
+				30DC38641EB6E987004A3F92 /* lc3bsim5.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -246,6 +286,7 @@
 				306BAFFD1E5AC949002E3A7B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

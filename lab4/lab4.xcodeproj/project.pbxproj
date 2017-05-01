@@ -26,24 +26,23 @@
 		300C77621E9B39A800548D0F /* ucode4 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ucode4; sourceTree = "<group>"; };
 		300C77631E9B3D7600548D0F /* add.asm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm.asm; path = add.asm; sourceTree = "<group>"; };
 		300C77641E9B3D7600548D0F /* data.asm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm.asm; path = data.asm; sourceTree = "<group>"; };
-		300C77651E9B3D7600548D0F /* except_protect.asm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm.asm; path = except_protect.asm; sourceTree = "<group>"; };
 		300C77661E9B3D7600548D0F /* except_unaligned.asm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm.asm; path = except_unaligned.asm; sourceTree = "<group>"; };
 		300C77671E9B3D7600548D0F /* except_unknown.asm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm.asm; path = except_unknown.asm; sourceTree = "<group>"; };
 		300C77681E9B3D7600548D0F /* int.asm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm.asm; path = int.asm; sourceTree = "<group>"; };
 		300C77691E9B3D7600548D0F /* vector_table.asm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm.asm; path = vector_table.asm; sourceTree = "<group>"; };
-		300C77731E9B4AF600548D0F /* data.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = data.hex; sourceTree = "<group>"; };
-		300C77741E9B4AF600548D0F /* except_protect.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = except_protect.hex; sourceTree = "<group>"; };
-		300C77751E9B4AF600548D0F /* int.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = int.hex; sourceTree = "<group>"; };
-		300C77761E9B50D800548D0F /* add.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = add.hex; sourceTree = "<group>"; };
-		300C77771E9B50D800548D0F /* except_unaligned.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = except_unaligned.hex; sourceTree = "<group>"; };
-		300C77781E9B50D800548D0F /* except_unknown.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = except_unknown.hex; sourceTree = "<group>"; };
-		300C77791E9B50D800548D0F /* vector_table.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = vector_table.hex; sourceTree = "<group>"; };
-		300C777A1E9B5DD500548D0F /* add2.asm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm.asm; path = add2.asm; sourceTree = "<group>"; };
-		300C777B1E9B5DD500548D0F /* add2.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = add2.hex; sourceTree = "<group>"; };
-		300C777C1E9B5DD500548D0F /* add3.asm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm.asm; path = add3.asm; sourceTree = "<group>"; };
-		300C777D1E9B5DD500548D0F /* add3.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = add3.hex; sourceTree = "<group>"; };
 		3024AC981E5AC8BE0034E01F /* lab4 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = lab4; sourceTree = BUILT_PRODUCTS_DIR; };
 		3024AC9B1E5AC8BE0034E01F /* lc3bsim4.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = lc3bsim4.c; sourceTree = "<group>"; };
+		303851B31EB53CE2009DFE99 /* results.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = results.txt; sourceTree = "<group>"; };
+		30DC37F71EB5DEB1004A3F92 /* add.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = add.hex; sourceTree = "<group>"; };
+		30DC37F81EB5DEB1004A3F92 /* data.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = data.hex; sourceTree = "<group>"; };
+		30DC37F91EB5DEB1004A3F92 /* dumpsim */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dumpsim; sourceTree = "<group>"; };
+		30DC37FA1EB5DEB1004A3F92 /* except_prot.asm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm.asm; path = except_prot.asm; sourceTree = "<group>"; };
+		30DC37FB1EB5DEB1004A3F92 /* except_prot.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = except_prot.hex; sourceTree = "<group>"; };
+		30DC37FC1EB5DEB1004A3F92 /* except_unaligned.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = except_unaligned.hex; sourceTree = "<group>"; };
+		30DC37FD1EB5DEB1004A3F92 /* except_unknown.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = except_unknown.hex; sourceTree = "<group>"; };
+		30DC37FE1EB5DEB1004A3F92 /* int.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = int.hex; sourceTree = "<group>"; };
+		30DC37FF1EB5DEB1004A3F92 /* vector_table.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = vector_table.hex; sourceTree = "<group>"; };
+		30DC38011EB5E112004A3F92 /* dumpsim_temp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dumpsim_temp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,26 +75,25 @@
 		3024AC9A1E5AC8BE0034E01F /* lab4 */ = {
 			isa = PBXGroup;
 			children = (
-				300C777A1E9B5DD500548D0F /* add2.asm */,
-				300C777B1E9B5DD500548D0F /* add2.hex */,
-				300C777C1E9B5DD500548D0F /* add3.asm */,
-				300C777D1E9B5DD500548D0F /* add3.hex */,
-				300C77761E9B50D800548D0F /* add.hex */,
-				300C77771E9B50D800548D0F /* except_unaligned.hex */,
-				300C77781E9B50D800548D0F /* except_unknown.hex */,
-				300C77791E9B50D800548D0F /* vector_table.hex */,
-				300C77731E9B4AF600548D0F /* data.hex */,
-				300C77741E9B4AF600548D0F /* except_protect.hex */,
-				300C77751E9B4AF600548D0F /* int.hex */,
+				30DC38011EB5E112004A3F92 /* dumpsim_temp */,
+				30DC37F71EB5DEB1004A3F92 /* add.hex */,
+				30DC37F81EB5DEB1004A3F92 /* data.hex */,
+				30DC37F91EB5DEB1004A3F92 /* dumpsim */,
+				30DC37FA1EB5DEB1004A3F92 /* except_prot.asm */,
+				30DC37FB1EB5DEB1004A3F92 /* except_prot.hex */,
+				30DC37FC1EB5DEB1004A3F92 /* except_unaligned.hex */,
+				30DC37FD1EB5DEB1004A3F92 /* except_unknown.hex */,
+				30DC37FE1EB5DEB1004A3F92 /* int.hex */,
+				30DC37FF1EB5DEB1004A3F92 /* vector_table.hex */,
 				300C77631E9B3D7600548D0F /* add.asm */,
 				300C77641E9B3D7600548D0F /* data.asm */,
-				300C77651E9B3D7600548D0F /* except_protect.asm */,
 				300C77661E9B3D7600548D0F /* except_unaligned.asm */,
 				300C77671E9B3D7600548D0F /* except_unknown.asm */,
 				300C77681E9B3D7600548D0F /* int.asm */,
 				300C77691E9B3D7600548D0F /* vector_table.asm */,
 				300C77621E9B39A800548D0F /* ucode4 */,
 				3024AC9B1E5AC8BE0034E01F /* lc3bsim4.c */,
+				303851B31EB53CE2009DFE99 /* results.txt */,
 			);
 			path = lab4;
 			sourceTree = "<group>";
