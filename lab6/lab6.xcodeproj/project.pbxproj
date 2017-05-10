@@ -25,6 +25,18 @@
 /* Begin PBXFileReference section */
 		30ABF5B41E5AC97E008BEF19 /* lab6 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = lab6; sourceTree = BUILT_PRODUCTS_DIR; };
 		30ABF5B71E5AC97E008BEF19 /* lc3bsim6.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = lc3bsim6.c; sourceTree = "<group>"; };
+		30E328371EC071C800E49685 /* assembler.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = assembler.c; sourceTree = "<group>"; };
+		30E328391EC25BB300E49685 /* example0.asm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm.asm; path = example0.asm; sourceTree = "<group>"; };
+		30E3283A1EC25BB300E49685 /* example1.asm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm.asm; path = example1.asm; sourceTree = "<group>"; };
+		30E3283B1EC25BB300E49685 /* example2.asm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm.asm; path = example2.asm; sourceTree = "<group>"; };
+		30E3283F1EC2907D00E49685 /* example0.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = example0.hex; sourceTree = "<group>"; };
+		30E328401EC2907D00E49685 /* example1.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = example1.hex; sourceTree = "<group>"; };
+		30E328411EC2907D00E49685 /* example2.hex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = example2.hex; sourceTree = "<group>"; };
+		30E328421EC2907D00E49685 /* ucode6 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ucode6; sourceTree = "<group>"; };
+		30E328431EC2953500E49685 /* dumpsim */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dumpsim; sourceTree = "<group>"; };
+		30E328441EC295A000E49685 /* correct_dumpsim0 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = correct_dumpsim0; sourceTree = "<group>"; };
+		30E328451EC295A000E49685 /* correct_dumpsim1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = correct_dumpsim1; sourceTree = "<group>"; };
+		30E328461EC295A000E49685 /* correct_dumpsim2 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = correct_dumpsim2; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +69,18 @@
 		30ABF5B61E5AC97E008BEF19 /* lab6 */ = {
 			isa = PBXGroup;
 			children = (
+				30E328441EC295A000E49685 /* correct_dumpsim0 */,
+				30E328451EC295A000E49685 /* correct_dumpsim1 */,
+				30E328461EC295A000E49685 /* correct_dumpsim2 */,
+				30E328431EC2953500E49685 /* dumpsim */,
+				30E3283F1EC2907D00E49685 /* example0.hex */,
+				30E328401EC2907D00E49685 /* example1.hex */,
+				30E328411EC2907D00E49685 /* example2.hex */,
+				30E328421EC2907D00E49685 /* ucode6 */,
+				30E328391EC25BB300E49685 /* example0.asm */,
+				30E3283A1EC25BB300E49685 /* example1.asm */,
+				30E3283B1EC25BB300E49685 /* example2.asm */,
+				30E328371EC071C800E49685 /* assembler.c */,
 				30ABF5B71E5AC97E008BEF19 /* lc3bsim6.c */,
 			);
 			path = lab6;
@@ -246,6 +270,7 @@
 				30ABF5BD1E5AC97E008BEF19 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
