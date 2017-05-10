@@ -543,9 +543,9 @@ int main(int argc, char* argv[]) {
   printf("output file name = '%s'\n", oFileName);
 */
     
-    char* prgs[] = {"add.asm", "data.asm", "int.asm"};
-    char* prgs2[] = {"add.hex", "data.hex", "int.hex"};
-    for (int i = 0; i < 3; i++) {
+    char* prgs[] = {"add.asm", "test_isa.asm", "dep_add.asm", "test2.asm", "kk.asm", "mul.asm"};
+    char* prgs2[] = {"add.hex", "test_isa.hex", "dep_add.hex", "test2.hex", "kk.hex", "mul.hex"};
+    for (int i = 0; i < 6; i++) {
         firstPass(prgs[i]);
         secondPass(prgs[i], prgs2[i]);
     }

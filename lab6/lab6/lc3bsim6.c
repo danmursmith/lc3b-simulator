@@ -1,6 +1,6 @@
 /*
- Name 1: Nolan Corcoran
- UTEID 1: ndc466
+ Name 1: Your Name
+ UTEID 1: Your UTEID
  */
 
 /***************************************************************/
@@ -148,7 +148,7 @@ int Get_TRAP_OP(int *x)        { return (x[MEM_TRAP_OP]); }
 int Get_DCACHE_EN(int *x)      { return (x[MEM_DCACHE_EN]); }
 int Get_DCACHE_RW(int *x)      { return (x[MEM_DCACHE_RW]); }
 int Get_DATA_SIZE(int *x)      { return (x[MEM_DATA_SIZE]); }
-int Get_DR_VALUEMUX(int *x)   { return ((x[SR_DR_VALUEMUX1] << 1 ) + x[SR_DR_VALUEMUX0]); }
+int Get_DR_VALUEMUX1(int *x)   { return ((x[SR_DR_VALUEMUX1] << 1 ) + x[SR_DR_VALUEMUX0]); }
 int Get_AGEX_LD_REG(int *x)    { return (x[AGEX_LD_REG]); }
 int Get_AGEX_LD_CC(int *x)     { return (x[AGEX_LD_CC]); }
 int Get_MEM_LD_REG(int *x)     { return (x[MEM_LD_REG]); }
@@ -237,12 +237,12 @@ PipeState_Entry PS, NEW_PS;
 int RUN_BIT;
 
 /* Internal stall signals */
-int DEP_STALL,
-    V_DE_BR_STALL,
-    V_AGEX_BR_STALL,
-    V_MEM_BR_STALL,
-    MEM_STALL,
-    ICACHE_R;
+int   dep_stall,
+v_de_br_stall,
+v_agex_br_stall,
+v_mem_br_stall,
+mem_stall,
+icache_r;
 
 /***************************************************************/
 /* A cycle counter.                                            */
@@ -422,12 +422,12 @@ void idump(FILE * dumpsim_file) {
     printf("\n");
     
     printf("------------- Stall Signals -------------\n");
-    printf("ICACHE_R        :  %d\n", ICACHE_R);
-    printf("DEP_STALL       :  %d\n", DEP_STALL);
-    printf("V_DE_BR_STALL   :  %d\n", V_DE_BR_STALL);
-    printf("V_AGEX_BR_STALL :  %d\n", V_AGEX_BR_STALL);
-    printf("MEM_STALL       :  %d\n", MEM_STALL);
-    printf("V_MEM_BR_STALL  :  %d\n", V_MEM_BR_STALL);
+    printf("ICACHE_R        :  %d\n", icache_r);
+    printf("DEP_STALL       :  %d\n", dep_stall);
+    printf("V_DE_BR_STALL   :  %d\n", v_de_br_stall);
+    printf("V_AGEX_BR_STALL :  %d\n", v_agex_br_stall);
+    printf("MEM_STALL       :  %d\n", mem_stall);
+    printf("V_MEM_BR_STALL  :  %d\n", v_mem_br_stall);
     printf("\n");
     
     printf("------------- DE   Latches --------------\n");
@@ -495,12 +495,12 @@ void idump(FILE * dumpsim_file) {
     fprintf(dumpsim_file,"\n");
     
     fprintf(dumpsim_file,"------------- Stall Signals -------------\n");
-    fprintf(dumpsim_file,"ICACHE_R        :  %d\n", ICACHE_R);
-    fprintf(dumpsim_file,"DEP_STALL       :  %d\n", DEP_STALL);
-    fprintf(dumpsim_file,"V_DE_BR_STALL   :  %d\n", V_DE_BR_STALL);
-    fprintf(dumpsim_file,"V_AGEX_BR_STALL :  %d\n", V_AGEX_BR_STALL);
-    fprintf(dumpsim_file,"MEM_STALL       :  %d\n", MEM_STALL);
-    fprintf(dumpsim_file,"V_MEM_BR_STALL  :  %d\n", V_MEM_BR_STALL);
+    fprintf(dumpsim_file,"ICACHE_R        :  %d\n", icache_r);
+    fprintf(dumpsim_file,"DEP_STALL       :  %d\n", dep_stall);
+    fprintf(dumpsim_file,"V_DE_BR_STALL   :  %d\n", v_de_br_stall);
+    fprintf(dumpsim_file,"V_AGEX_BR_STALL :  %d\n", v_agex_br_stall);
+    fprintf(dumpsim_file,"MEM_STALL       :  %d\n", mem_stall);
+    fprintf(dumpsim_file,"V_MEM_BR_STALL  :  %d\n", v_mem_br_stall);
     fprintf(dumpsim_file,"\n");
     
     fprintf(dumpsim_file,"------------- DE   Latches --------------\n");
@@ -700,11 +700,11 @@ void init_state() {
     memset(&PS, 0 ,sizeof(PipeState_Entry));
     memset(&NEW_PS, 0 , sizeof(PipeState_Entry));
     
-    DEP_STALL       = 0;
-    V_DE_BR_STALL   = 0;
-    V_AGEX_BR_STALL = 0;
-    V_MEM_BR_STALL  = 0;
-    MEM_STALL       = 0;
+    dep_stall       = 0;
+    v_de_br_stall   = 0;
+    v_agex_br_stall = 0;
+    v_mem_br_stall  = 0;
+    mem_stall       = 0;
 }
 
 /**************************************************************/
@@ -803,17 +803,17 @@ void dcache_access(int dcache_addr, int *read_word, int write_word, int *dcache_
 /* icache_access                                               */
 /*                                                             */
 /***************************************************************/
-void icache_access(int icache_addr, int *read_word, int *ICACHE_R) {
+void icache_access(int icache_addr, int *read_word, int *icache_r) {
     
-    int addr = icache_addr >> 1 ;
+    int addr = icache_addr >> 1 ; 
     int random = CYCLE_COUNT % 13;
     
     if (!random) {
-        *ICACHE_R = 0;
+        *icache_r = 0;
         *read_word = 0xfeed;
     }
     else {
-        *ICACHE_R = 1;
+        *icache_r = 1;
         *read_word = MEMORY[addr][1] << 8 | MEMORY[addr][0];
     }
 }
@@ -823,8 +823,8 @@ void icache_access(int icache_addr, int *read_word, int *ICACHE_R) {
 /*                                                             */
 /***************************************************************/
 int main(int argc, char *argv[]) {
-
     FILE * dumpsim_file;
+    
     /* Error Checking */
     if (argc < 3) {
         printf("Error: usage: %s <micro_code_file> <program_file_1> <program_file_2> ...\n",
@@ -835,17 +835,15 @@ int main(int argc, char *argv[]) {
     printf("LC-3b Simulator\n\n");
     
     initialize(argv[1], argv[2], argc - 2);
-
     
     if ( (dumpsim_file = fopen( "dumpsim", "w" )) == NULL ) {
         printf("Error: Can't open dumpsim file\n");
         exit(-1);
     }
-
+    
     while (1)
         get_command(dumpsim_file);
 }
-
 
 /***************************************************************/
 /* Do not modify the above code.
@@ -1053,7 +1051,7 @@ void SR_stage() {
     /* You are given the code for SR_stage to get you started. Look at
      the figure for SR stage to see how this code is implemented. */
     
-    switch (Get_DR_VALUEMUX(PS.SR_CS))
+    switch (Get_DR_VALUEMUX1(PS.SR_CS))
     {
         case 0:
             SR_REG_DATA = PS.SR_ADDRESS ;
@@ -1139,15 +1137,15 @@ void MEM_stage() {
     /* TRAP_PC, TARGET.PC, MEM.STALL, MEM.DRID */
     TRAP_PC = Get_DATA_SIZE(PS.MEM_CS) ? DATA_OUT : (bit0(PS.MEM_ADDRESS) ? bits15_8(DATA_OUT) : bits7_0(DATA_OUT));    /* POSSIBLE ERROR!!! */
     TARGET_PC = PS.MEM_ADDRESS;
-    MEM_STALL = !DCACHE_R && V_DCACHE_EN;
+    mem_stall = !DCACHE_R && V_DCACHE_EN;
     MEM_DRID = PS.MEM_DRID;
     
     /* DEPENDENCY CHECK SIGNALS */
     V_MEM_LD_CC = (PS.MEM_V) & (Get_MEM_LD_CC(PS.MEM_CS));
     V_MEM_LD_REG = (PS.MEM_V) & (Get_MEM_LD_REG(PS.MEM_CS));
-    V_MEM_BR_STALL = (PS.MEM_V) & (Get_MEM_BR_STALL(PS.MEM_CS));
+    v_mem_br_stall = (PS.MEM_V) & (Get_MEM_BR_STALL(PS.MEM_CS));
     
-    NEW_PS.SR_V = (!PS.MEM_V || MEM_STALL) ? 0 : 1;     /* SR.V */
+    NEW_PS.SR_V = (!PS.MEM_V || mem_stall) ? 0 : 1;     /* SR.V */
     NEW_PS.SR_DATA = TRAP_PC;
     NEW_PS.SR_ADDRESS = PS.MEM_ADDRESS;
     NEW_PS.SR_NPC = PS.MEM_NPC;
@@ -1205,11 +1203,11 @@ void AGEX_stage() {
     /* DEPENDENCY CHECK SIGNALS */
     V_AGEX_LD_CC = PS.AGEX_V & Get_AGEX_LD_CC(PS.AGEX_CS);
     V_AGEX_LD_REG = PS.AGEX_V & Get_AGEX_LD_REG(PS.AGEX_CS);
-    V_AGEX_BR_STALL = PS.AGEX_V & Get_AGEX_BR_STALL(PS.AGEX_CS);
+    v_agex_br_stall = PS.AGEX_V & Get_AGEX_BR_STALL(PS.AGEX_CS);
     
     /* AGEX.DRID, LD.MEM */
     AGEX_DRID = PS.AGEX_DRID;
-    LD_MEM = !MEM_STALL;
+    LD_MEM = !mem_stall;
     
     if (LD_MEM) {
         /* Your code for latching into MEM latches goes here */
@@ -1255,7 +1253,7 @@ void DE_stage() {
     DRMUX_OUT = Get_DRMUX(CONTROL_STORE[CONTROL_STORE_ADDRESS]) ? 7 : bits11_9(PS.DE_IR);
     
     /* V.DE.BR.STALL */
-    V_DE_BR_STALL = (PS.DE_V & Get_DE_BR_STALL(CONTROL_STORE[CONTROL_STORE_ADDRESS]));
+    v_de_br_stall = (PS.DE_V & Get_DE_BR_STALL(CONTROL_STORE[CONTROL_STORE_ADDRESS]));
     
     /* SR1_NEEDED, SR2_NEEDED */
     SR1_N = Get_SR1_NEEDED(CONTROL_STORE[CONTROL_STORE_ADDRESS]);
@@ -1263,12 +1261,12 @@ void DE_stage() {
     
     int isBR_OP = Get_DE_BR_OP(CONTROL_STORE[CONTROL_STORE_ADDRESS]);
     if (PS.DE_V) {
-        DEP_STALL = isBR_OP ? (V_SR_LD_CC || V_MEM_LD_CC || V_AGEX_LD_CC) : (SR1_N && inputs_written(SR1_ID)) || (SR2_N && inputs_written(SR2_ID));
+        dep_stall = isBR_OP ? (V_SR_LD_CC || V_MEM_LD_CC || V_AGEX_LD_CC) : (SR1_N && inputs_written(SR1_ID)) || (SR2_N && inputs_written(SR2_ID));
     } else {
-        DEP_STALL = 0;
+        dep_stall = 0;
     }
 
-    LD_AGEX = !MEM_STALL;
+    LD_AGEX = !mem_stall;
     
     if (LD_AGEX) {
         /* Your code for latching into AGEX latches goes here */
@@ -1278,7 +1276,7 @@ void DE_stage() {
         NEW_PS.AGEX_SR2 = REGS[SR2_ID];
         NEW_PS.AGEX_CC = CC_OUT;
         NEW_PS.AGEX_DRID = DRMUX_OUT;
-        NEW_PS.AGEX_V = (!PS.DE_V || DEP_STALL || V_AGEX_BR_STALL || V_MEM_BR_STALL) ? 0 : 1;
+        NEW_PS.AGEX_V = (!PS.DE_V || dep_stall || v_agex_br_stall || v_mem_br_stall) ? 0 : 1;
         
         /* The code below propagates the control signals from the CONTROL
          STORE to the AGEX.CS latch. */
@@ -1307,13 +1305,13 @@ void FETCH_stage() {
     /* your code for FETCH stage goes here */
 
     /* DE.IR */
-    icache_access(PC, &READ_WORD, &ICACHE_R);
+    icache_access(PC, &READ_WORD, &icache_r);
     
     /* DE.NPC */
     PC_OUT = PC + 2;
     
     /* DE.V */
-    V_OUT = (!ICACHE_R || V_DE_BR_STALL || V_AGEX_BR_STALL || V_MEM_BR_STALL) ? 0 : 1;
+    V_OUT = (!icache_r || v_de_br_stall || v_agex_br_stall || v_mem_br_stall) ? 0 : 1;
     
     /* PCMUX */
     switch (MEM_PCMUX) {
@@ -1324,10 +1322,10 @@ void FETCH_stage() {
     }
     
     /* LD.PC */
-    if (!MEM_PCMUX && V_MEM_BR_STALL) {
+    if (!MEM_PCMUX && v_mem_br_stall) {
         LD_PC = 0;
     } else {
-        if ((!MEM_STALL && V_MEM_BR_STALL) || (!(DEP_STALL || !ICACHE_R || MEM_STALL || V_DE_BR_STALL || V_AGEX_BR_STALL))) {
+        if ((!mem_stall && v_mem_br_stall) || (!(dep_stall || !icache_r || mem_stall || v_de_br_stall || v_agex_br_stall))) {
             LD_PC = 1;
             PC = PCMUX_OUT;
         } else {
@@ -1336,7 +1334,7 @@ void FETCH_stage() {
     }
     
     /* LD.DE */
-    LD_DE = (DEP_STALL || MEM_STALL) ? 0 : 1;
+    LD_DE = (dep_stall || mem_stall) ? 0 : 1;
     
     if (LD_DE) {
         NEW_PS.DE_NPC = PC_OUT;

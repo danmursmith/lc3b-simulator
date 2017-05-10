@@ -1,5 +1,5 @@
 	.ORIG x3000
 	ADD r3, r1, #1
-	AND r2, r3, r3
+    ADD R2, R3, R3
 	TRAP x25
 	.END
