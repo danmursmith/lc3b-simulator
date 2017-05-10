@@ -823,33 +823,27 @@ void icache_access(int icache_addr, int *read_word, int *ICACHE_R) {
 /*                                                             */
 /***************************************************************/
 int main(int argc, char *argv[]) {
-    int debug = 0;
-    
+
     FILE * dumpsim_file;
     /* Error Checking */
-    if (!debug) {
-        if (argc < 3) {
-            printf("Error: usage: %s <micro_code_file> <program_file_1> <program_file_2> ...\n",
-                   argv[0]);
-            exit(1);
-        }
-        
-        printf("LC-3b Simulator\n\n");
-        
-        initialize(argv[1], argv[2], argc - 2);
-    } else {
-        char* args[] = {"ucode6", "test_isa.hex"};
-        initialize(args[0], args[1], 1);
+    if (argc < 3) {
+        printf("Error: usage: %s <micro_code_file> <program_file_1> <program_file_2> ...\n",
+               argv[0]);
+        exit(1);
     }
+    
+    printf("LC-3b Simulator\n\n");
+    
+    initialize(argv[1], argv[2], argc - 2);
+
     
     if ( (dumpsim_file = fopen( "dumpsim", "w" )) == NULL ) {
         printf("Error: Can't open dumpsim file\n");
         exit(-1);
     }
-    
+
     while (1)
         get_command(dumpsim_file);
-
 }
 
 
@@ -989,7 +983,7 @@ int SEXT(int val, int msb) {
         case 7:
             return (val & 0x0080) ? (val |= 0xFFFFFF00) : val;
             break;
-        case 9:
+        case 8:
             return (val & 0x0100) ? (val |= 0xFFFFFE00) : val;
             break;
         case 10:
@@ -997,6 +991,60 @@ int SEXT(int val, int msb) {
             break;
     }
     return val;
+}
+
+char* get_instr(int store) {
+    switch(store) {
+        case 0:
+        case 1:
+        case 2:
+        case 3:
+            return "BR";
+            break;
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+            return "ADD";
+            break;
+        case 8:
+        case 9:
+        case 10:
+        case 11:
+            return "LDB";
+            break;
+        case 20:
+        case 21:
+        case 22:
+        case 23:
+            return "AND";
+            break;
+        case 24:
+        case 25:
+        case 26:
+        case 27:
+            return "LDW";
+            break;
+        case 28:
+        case 29:
+        case 30:
+        case 31:
+            return "STW";
+            break;
+        case 56:
+        case 57:
+        case 58:
+        case 59:
+            return "LEA";
+            break;
+        case 60:
+        case 61:
+        case 62:
+        case 63:
+            return "TRAP";
+            break;
+    }
+    return "N/A";
 }
 
 /************************* SR_stage() *************************/
@@ -1029,8 +1077,7 @@ void SR_stage() {
     SR_N = ((SR_REG_DATA & 0x8000) ? 1 : 0);
     SR_Z = ((SR_REG_DATA & 0xFFFF) ? 0 : 1);
     SR_P = 0;
-    if ((!SR_N) && (!SR_Z))
-        SR_P = 1;
+    if ((!SR_N) && (!SR_Z)) SR_P = 1;
     
 }
 
@@ -1100,7 +1147,7 @@ void MEM_stage() {
     V_MEM_LD_REG = (PS.MEM_V) & (Get_MEM_LD_REG(PS.MEM_CS));
     V_MEM_BR_STALL = (PS.MEM_V) & (Get_MEM_BR_STALL(PS.MEM_CS));
     
-    NEW_PS.SR_V = (MEM_STALL || !PS.MEM_V) ? 0 : 1;     /* SR.V */
+    NEW_PS.SR_V = (!PS.MEM_V || MEM_STALL) ? 0 : 1;     /* SR.V */
     NEW_PS.SR_DATA = TRAP_PC;
     NEW_PS.SR_ADDRESS = PS.MEM_ADDRESS;
     NEW_PS.SR_NPC = PS.MEM_NPC;
