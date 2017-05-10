@@ -1134,7 +1134,7 @@ void AGEX_stage() {
         case 1: ADDR2MUX_OUT = SEXT(bits5_0(PS.AGEX_IR), 5); break;
         case 2: ADDR2MUX_OUT = SEXT(bits8_0(PS.AGEX_IR), 8); break;
         case 3: ADDR2MUX_OUT = SEXT(bits10_0(PS.AGEX_IR), 10); break;
-        default: printf("Exiting-1107"); exit(-1); break;
+        default: ADDR2MUX_OUT = 0; break;
     }
     LSHF1_OUT = Get_LSHF1(PS.AGEX_CS) ? (ADDR2MUX_OUT << 1) : ADDR2MUX_OUT;
     ADDRESSMUX_OUT = Get_ADDRESSMUX(PS.AGEX_CS) ? (ADDR1MUX_OUT + LSHF1_OUT) : bits7_0(PS.AGEX_IR) << 1;
@@ -1146,14 +1146,14 @@ void AGEX_stage() {
         case 1: ALU_OUT = Low16bits(PS.AGEX_SR1 & SR2MUX_OUT); break;
         case 2: ALU_OUT = Low16bits(PS.AGEX_SR1 ^ SR2MUX_OUT); break;
         case 3: ALU_OUT = Low16bits(SR2MUX_OUT); break;
-        default: printf("Exiting-1119"); exit(-1); break;
+        default: ALU_OUT = Low16bits(SR2MUX_OUT); break;
     }
     switch (bits5_4(PS.AGEX_IR)) {
         case 0: SHIFTER_OUT = Low16bits(PS.AGEX_SR1 << bits3_0(PS.AGEX_IR)); break;
         case 1: SHIFTER_OUT = Low16bits(PS.AGEX_SR1 >> bits3_0(PS.AGEX_IR)); break;
         case 2: SHIFTER_OUT = Low16bits(PS.AGEX_SR1 << bits3_0(PS.AGEX_IR)); break;
         case 3: SHIFTER_OUT = Low16bits((0xFFFF0000 >> bits3_0(PS.AGEX_IR))) + (PS.AGEX_SR1 >> bits3_0(PS.AGEX_IR)); break;
-        default: printf("amount4 = %d", bits3_0(PS.AGEX_IR)); exit(-1); break;
+        default: SHIFTER_OUT = Low16bits(PS.AGEX_SR1 << bits3_0(PS.AGEX_IR)); break;
     }
     ALU_RESULTMUX_OUT = Get_ALU_RESULTMUX(PS.AGEX_CS) ? ALU_OUT : SHIFTER_OUT;
     
@@ -1219,7 +1219,6 @@ void DE_stage() {
     int isBR_OP = Get_DE_BR_OP(CONTROL_STORE[CONTROL_STORE_ADDRESS]);
     if (PS.DE_V) {
         DEP_STALL = isBR_OP ? (V_SR_LD_CC || V_MEM_LD_CC || V_AGEX_LD_CC) : (SR1_N && inputs_written(SR1_ID)) || (SR2_N && inputs_written(SR2_ID));
-        printf("DEP_STALL = %d", DEP_STALL);
     } else {
         DEP_STALL = 0;
     }
@@ -1279,7 +1278,7 @@ void FETCH_stage() {
         case 0: PCMUX_OUT = PC_OUT; break;
         case 1: PCMUX_OUT = TARGET_PC; break;
         case 2: PCMUX_OUT = TRAP_PC; break;
-        default: printf("Exiting-1251"); exit(-1); break;
+        default: PCMUX_OUT = PC_OUT; break;
     }
     
     /* LD.PC */
